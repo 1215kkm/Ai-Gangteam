@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>상상의 문 — 웹사이트 리디자인 진단 &amp; 제안 (강팀 v2)</title>
-<meta name="description" content="상상의 문 방탈출 웹사이트 리디자인 — 강팀 진단 & 제안. 빈 슬롯을 파는 사이트로.">
+<title>상상의 문 — 마지막 한 칸을 푸는 열쇠 (강팀 제안서)</title>
+<meta name="description" content="상상의 문 방탈출 웹 제안 — 빈 슬롯이 매출이 되는 예약 시스템. 강팀 오리지널, 아뱅 주도.">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
-/* ===== Crowny Class 토큰 (정본: .claude/knowledge/ui-designer/styles/tokens.css 복사·인라인) ===== */
+/* ===== Crowny Class 토큰 (정본: .claude/knowledge/ui-designer/styles/tokens.css) ===== */
 :root{
   --primary:#8A38F5; --primary-dark:#7030D4; --primary-light:#A855F7; --primary-rgb:138,56,245;
   --secondary:#D53A6B; --secondary-light:#F472B6;
@@ -21,161 +21,162 @@
   --shadow-sm:0 1px 2px rgba(0,0,0,.05); --shadow-md:0 4px 6px rgba(0,0,0,.07);
   --shadow-lg:0 10px 15px rgba(0,0,0,.10); --shadow-xl:0 20px 25px rgba(0,0,0,.15);
   --shadow-primary:0 4px 14px rgba(138,56,245,.35);
-  --spacing-xs:4px; --spacing-sm:8px; --spacing-md:16px; --spacing-lg:24px; --spacing-xl:32px;
+  --spacing-md:16px; --spacing-lg:24px; --spacing-xl:32px;
   --font-xs:16px; --font-sm:16px; --font-md:16px; --font-lg:18px; --font-xl:20px;
   --font-2xl:26px; --font-3xl:32px; --font-4xl:48px;
   --font-family-base:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --content-max-width:1180px;
+  --content-max-width:1120px;
+  --ink:#0b0a14;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:var(--font-family-base);font-size:var(--font-md);line-height:1.6;color:var(--text-dark);background:var(--light-bg);-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
-a{color:inherit}
 .gradient-text{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .wrap{max-width:var(--content-max-width);margin:0 auto;padding:0 24px}
-
-/* ===== 상단 진행바 ===== */
 .progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--gradient);z-index:100;transition:width .1s linear}
 
-/* ===== 섹션 공통 ===== */
-section{padding:96px 0}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:var(--font-sm);font-weight:700;letter-spacing:.04em}
-.eyebrow .num{font-size:var(--font-sm);font-weight:800}
+section{padding:100px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:var(--font-sm);font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .sec-h{font-size:var(--font-3xl);font-weight:800;line-height:1.25;margin:14px 0 10px;letter-spacing:-.01em}
-.sec-sub{font-size:var(--font-lg);color:var(--text-muted);max-width:760px}
+.sec-sub{font-size:var(--font-lg);color:var(--text-muted);max-width:780px}
 .sec-head{margin-bottom:48px}
+.lead-copy{font-size:var(--font-lg);line-height:1.85;max-width:760px}
+.lead-copy b{color:var(--primary-dark)}
+.lead-copy .hit{color:var(--secondary);font-weight:800}
 
 /* ===== 표지 ===== */
-.cover{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;color:#fff;padding:0}
+.cover{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;color:#fff}
 .cover-bg{position:absolute;inset:0;background:
-  linear-gradient(135deg,rgba(112,48,212,.92) 0%,rgba(213,58,107,.86) 100%),
+  radial-gradient(80% 60% at 72% 38%,rgba(213,58,107,.55),transparent 60%),
+  linear-gradient(135deg,rgba(15,8,30,.94),rgba(20,10,28,.9)),
   url('assets/hero_bgi.webp') center/cover no-repeat;z-index:0}
-.cover-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 90% at 80% 10%,transparent 30%,rgba(4,3,10,.55) 100%)}
-.cover .wrap{position:relative;z-index:2;width:100%}
-.cover .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(6px);padding:8px 16px;border-radius:var(--radius-full);font-weight:700;font-size:var(--font-sm)}
-.cover h1{font-size:clamp(34px,6vw,60px);font-weight:800;line-height:1.18;margin:24px 0 18px;letter-spacing:-.02em;max-width:14ch}
-.cover .lead{font-size:var(--font-xl);font-weight:500;opacity:.95;max-width:620px}
-.cover .meta{margin-top:32px;display:flex;gap:10px;flex-wrap:wrap}
-.cover .meta span{background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.22);padding:8px 14px;border-radius:var(--radius-full);font-size:var(--font-sm);font-weight:600}
-.scrolldown{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;opacity:.85;animation:bob 1.8s ease-in-out infinite}
+.cover-bg::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:3px;transform:translateX(-50%);
+  background:linear-gradient(180deg,transparent,rgba(213,58,107,.0));z-index:1}
+.lightslit{position:absolute;top:0;bottom:0;left:62%;width:120px;z-index:1;
+  background:linear-gradient(105deg,transparent 0%,rgba(138,56,245,.35) 45%,rgba(244,114,182,.55) 50%,rgba(138,56,245,.35) 55%,transparent 100%);
+  filter:blur(8px);transform:skewX(-8deg);opacity:.8;animation:slit 6s ease-in-out infinite}
+@keyframes slit{0%,100%{opacity:.5}50%{opacity:.95}}
+.cover .wrap{position:relative;z-index:3;width:100%}
+.cover .kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);padding:8px 16px;border-radius:var(--radius-full);font-weight:700;font-size:var(--font-sm)}
+.cover h1{font-size:clamp(40px,7.5vw,76px);font-weight:800;line-height:1.08;margin:24px 0 16px;letter-spacing:-.03em}
+.cover h1 .gt{background:linear-gradient(135deg,#c79bff,#ff8fb6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.cover .deck{font-size:var(--font-xl);font-weight:600;opacity:.95;margin-bottom:22px}
+.cover .sub{font-size:var(--font-lg);line-height:1.8;opacity:.82;max-width:560px}
+.cover .stamp{position:absolute;right:24px;bottom:28px;z-index:3;font-weight:800;letter-spacing:.04em;opacity:.85}
+.scrolldown{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;animation:bob 1.8s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
 
-/* ===== 칩 / 배지 ===== */
-.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--radius-full);font-size:var(--font-sm);font-weight:700;line-height:1}
-.chip.req{background:var(--secondary);color:#fff}
-.chip.rec{background:rgba(var(--primary-rgb),.12);color:var(--primary-dark)}
-.chip.opt{background:var(--light-bg);color:var(--text-muted);border:1px solid var(--light-border)}
-.chip.stage{background:#fff;border:1px solid var(--light-border);color:var(--text-dark)}
-.chip.ghost{background:#fff;border:1px solid var(--light-border);color:var(--text-muted)}
+/* ===== S2 히트맵 ===== */
+.heat-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.heat{background:#fff;border:1px solid var(--light-border);border-radius:var(--radius-xl);padding:22px;box-shadow:var(--shadow-md)}
+.heat .grid{display:grid;grid-template-columns:auto repeat(7,1fr);gap:6px}
+.heat .cell{aspect-ratio:1/.82;border-radius:var(--radius-sm);background:var(--light-bg);display:flex}
+.heat .cell.full{background:var(--gradient);box-shadow:0 2px 6px rgba(213,58,107,.3)}
+.heat .cell.mid{background:rgba(var(--primary-rgb),.28)}
+.heat .cell.empty{background:#eceef2;border:1px dashed #d6d9e0}
+.heat .cell.loss{background:#fff;border:1.5px dashed var(--secondary);position:relative}
+.heat .cell.loss::after{content:"₩";color:var(--secondary);font-weight:800;margin:auto;font-size:13px}
+.heat .hd,.heat .rh{font-size:13px;color:var(--text-muted);font-weight:700;display:flex;align-items:center;justify-content:center}
+.heat .rh{justify-content:flex-end;padding-right:8px}
+.heat-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:var(--font-sm);color:var(--text-muted)}
+.heat-legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px}
+.heat-cap{text-align:center;margin-top:10px;font-weight:700;color:var(--secondary)}
 
-/* ===== 진단 카드 ===== */
-.diag-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.diag{background:var(--light-card);border:1px solid var(--light-border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-md);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s}
-.diag:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-.diag .shot{aspect-ratio:16/10;background:#0b0a14 center/cover no-repeat;position:relative;display:flex;align-items:flex-end;padding:14px}
-.diag .shot.empty{background:repeating-linear-gradient(45deg,#f3f4f6,#f3f4f6 10px,#eceef2 10px,#eceef2 20px);border-bottom:1px dashed var(--light-border)}
-.diag .shot.empty span{margin:auto;color:var(--text-muted);font-size:var(--font-sm);font-weight:600;border:1px dashed #c7cbd3;padding:8px 14px;border-radius:var(--radius-md);background:#fff}
-.diag .body{padding:20px}
-.diag h3{font-size:var(--font-xl);font-weight:700;margin:12px 0 8px}
-.diag p{color:var(--text-muted);font-size:var(--font-md)}
-.factbox{margin-top:28px;background:#fff;border:1px solid var(--light-border);border-left:4px solid var(--primary);border-radius:var(--radius-lg);padding:18px 22px;color:var(--text-dark);box-shadow:var(--shadow-sm)}
-.factbox b{color:var(--primary-dark)}
+/* ===== 카피 블록 ===== */
+.lossbox{background:#fff;border:1px solid var(--light-border);border-left:4px solid var(--secondary);border-radius:var(--radius-lg);padding:24px 26px;box-shadow:var(--shadow-sm)}
 
-/* ===== 시장 비교 ===== */
-.mkt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.mkt{background:#fff;border:1px solid var(--light-border);border-radius:var(--radius-xl);padding:24px;box-shadow:var(--shadow-sm)}
-.mkt .ico{width:46px;height:46px;border-radius:var(--radius-md);background:rgba(var(--primary-rgb),.1);display:flex;align-items:center;justify-content:center;color:var(--primary);margin-bottom:14px}
-.mkt h3{font-size:var(--font-xl);font-weight:700;margin-bottom:6px}
-.mkt p{color:var(--text-muted)}
-.mkt.us{background:var(--gradient);color:#fff;border:none}
-.mkt.us .ico{background:rgba(255,255,255,.2);color:#fff}
-.mkt.us p{color:rgba(255,255,255,.92)}
-.conclusion{margin-top:24px;background:var(--gradient);color:#fff;border-radius:var(--radius-xl);padding:22px 26px;display:flex;align-items:center;gap:14px;font-size:var(--font-xl);font-weight:700;box-shadow:var(--shadow-primary)}
-.conclusion svg{flex:none}
+/* ===== S3 감사 ===== */
+.audit{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:start;margin-top:8px}
+.paycompare{display:grid;gap:16px}
+.payrow{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch}
+.paycard{border-radius:var(--radius-lg);padding:18px;border:1px solid var(--light-border);background:#fff}
+.paycard .tag{font-size:var(--font-sm);font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.paycard.bad{border-color:#f3b4b4;background:#fff7f7}
+.paycard.bad .tag{color:var(--error)}
+.paycard.good{border-color:#bfe6cc;background:#f6fdf8}
+.paycard.good .tag{color:var(--success)}
+.paycard .line{display:flex;justify-content:space-between;padding:5px 0;font-size:var(--font-md);border-bottom:1px dashed var(--light-border)}
+.paycard .line:last-child{border-bottom:none}
+.paycard .amt{font-weight:800}
+.paycard.bad .amt.x{color:var(--error)}
+.paycard.good .amt.o{color:var(--success)}
+.payrow .ar{align-self:center;color:var(--secondary)}
+.checklist{display:grid;gap:10px}
+.ck{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--light-border);border-radius:var(--radius-lg);padding:14px 16px;box-shadow:var(--shadow-sm)}
+.ck .bdg{flex:none;width:26px;height:26px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;color:#fff}
+.ck.ok .bdg{background:var(--success)} .ck.warn .bdg{background:var(--warning)} .ck.no .bdg{background:var(--error)}
+.ck b{font-weight:700}
+.ck p{color:var(--text-muted);font-size:var(--font-sm);margin-top:2px}
 
-/* ===== 전략 카드 ===== */
-.strat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.strat{background:#fff;border:1px solid var(--light-border);border-radius:var(--radius-xl);padding:26px;box-shadow:var(--shadow-md);position:relative;display:flex;flex-direction:column}
-.strat.lead{border:2px solid var(--primary);box-shadow:var(--shadow-primary)}
-.strat .tag-main{position:absolute;top:-13px;left:24px;background:var(--gradient);color:#fff;padding:5px 14px;border-radius:var(--radius-full);font-size:var(--font-sm);font-weight:700}
-.strat .ico{width:52px;height:52px;border-radius:var(--radius-lg);background:rgba(var(--primary-rgb),.1);color:var(--primary);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.strat h3{font-size:var(--font-xl);font-weight:800;margin-bottom:10px}
-.strat p{color:var(--text-muted);flex:1}
-.strat .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+/* ===== S4 솔루션 / 라이브 배지 ===== */
+.theme-row{display:flex;gap:20px;overflow-x:auto;padding:10px 2px;scroll-snap-type:x mandatory}
+.tcard{flex:none;width:230px;scroll-snap-align:start;background:var(--ink);border-radius:var(--radius-xl);overflow:hidden;position:relative;box-shadow:var(--shadow-lg)}
+.tcard img{aspect-ratio:3/4;object-fit:cover;opacity:.92}
+.tcard .meta{padding:12px 14px;color:#fff}
+.tcard .meta h4{font-size:var(--font-md);font-weight:700}
+.tcard .meta span{font-size:var(--font-sm);opacity:.7}
+.livebadge{position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;background:var(--secondary);color:#fff;font-weight:800;font-size:13px;padding:6px 11px;border-radius:var(--radius-full);box-shadow:0 0 0 0 rgba(213,58,107,.6);animation:pulse 2s infinite}
+.livebadge .dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:blink 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(213,58,107,.55)}70%{box-shadow:0 0 0 12px rgba(213,58,107,0)}100%{box-shadow:0 0 0 0 rgba(213,58,107,0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ===== Before / After ===== */
-.ba{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;margin-bottom:28px}
-.ba .card{background:#fff;border-radius:var(--radius-xl);box-shadow:var(--shadow-md);overflow:hidden;border:1px solid var(--light-border)}
-.ba .card.after{border:2px solid var(--primary)}
-.ba .lbl{display:flex;align-items:center;gap:8px;padding:14px 18px;font-weight:800;font-size:var(--font-md)}
-.ba .card.before .lbl{background:var(--light-bg);color:var(--text-muted)}
-.ba .card.after .lbl{background:var(--gradient);color:#fff}
-.ba figure{aspect-ratio:16/10;background:#0b0a14 center/cover no-repeat}
-.ba figure.deck{background-size:contain;background-color:#0a1a3a;background-repeat:no-repeat;background-position:center}
-.ba ul{list-style:none;padding:16px 18px;display:grid;gap:8px}
-.ba ul li{display:flex;gap:8px;align-items:flex-start;color:var(--text-dark);font-size:var(--font-md)}
-.ba ul li svg{flex:none;margin-top:3px}
-.ba .arrow{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:var(--radius-full);background:var(--gradient);color:#fff;box-shadow:var(--shadow-primary)}
-.callout{display:inline-flex;align-items:center;gap:8px;background:rgba(var(--primary-rgb),.08);color:var(--primary-dark);font-weight:700;padding:8px 14px;border-radius:var(--radius-full);font-size:var(--font-sm);margin:0 6px 28px 0}
+/* ===== S5 가격 사다리 ===== */
+.ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:end}
+.step{background:#fff;border:1px solid var(--light-border);border-radius:var(--radius-xl);padding:26px;box-shadow:var(--shadow-md);position:relative}
+.step.s1{border-top:4px solid var(--primary)}
+.step.s2{border-top:4px solid var(--secondary)}
+.step.s3{border-top:4px solid var(--primary-light)}
+.step .no{font-size:var(--font-sm);font-weight:800;color:var(--primary-dark);letter-spacing:.05em}
+.step h3{font-size:var(--font-xl);font-weight:800;margin:6px 0 14px}
+.step ul{list-style:none;display:grid;gap:8px;margin-bottom:16px}
+.step ul li{display:flex;gap:8px;color:var(--text-dark);font-size:var(--font-md)}
+.step ul li svg{flex:none;margin-top:3px;color:var(--primary)}
+.step .earn{background:rgba(var(--primary-rgb),.07);border-radius:var(--radius-md);padding:12px 14px;font-size:var(--font-sm);color:var(--primary-dark);font-weight:600;margin-bottom:14px}
+.step .price{font-size:var(--font-lg);font-weight:800;color:var(--text-dark)}
+.step .price small{display:block;font-size:var(--font-sm);font-weight:500;color:var(--text-muted);margin-top:2px}
 
-/* ===== KPI 카드 ===== */
-.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
-.kpi{background:#fff;border:1px solid var(--light-border);border-radius:var(--radius-xl);padding:22px 20px;box-shadow:var(--shadow-md);display:flex;flex-direction:column;gap:8px;transition:transform .25s}
-.kpi:hover{transform:translateY(-4px)}
-.kpi .big{font-size:var(--font-4xl);font-weight:800;line-height:1;letter-spacing:-.02em}
+/* ===== S6 KPI ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.kpi{background:#fff;border:1px solid var(--light-border);border-radius:var(--radius-xl);padding:22px 20px;box-shadow:var(--shadow-md);display:flex;flex-direction:column;gap:8px}
+.kpi .big{font-size:var(--font-2xl);font-weight:800;line-height:1.1}
 .kpi .lab{font-size:var(--font-lg);font-weight:700}
-.kpi .cap{font-size:var(--font-sm);color:var(--text-muted);margin-top:auto;padding-top:8px;border-top:1px dashed var(--light-border)}
+.kpi .cap{font-size:var(--font-sm);color:var(--text-muted);margin-top:auto;padding-top:10px;border-top:1px dashed var(--light-border)}
 
-/* ===== 타임라인 ===== */
-.tl{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative}
-.tl .node{background:#fff;border:1px solid var(--light-border);border-radius:var(--radius-xl);padding:24px;box-shadow:var(--shadow-md);position:relative}
-.tl .dot{width:40px;height:40px;border-radius:var(--radius-full);background:var(--gradient);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:14px;box-shadow:var(--shadow-primary)}
-.tl .node h3{font-size:var(--font-xl);font-weight:800;margin-bottom:4px}
-.tl .when{font-size:var(--font-sm);color:var(--primary-dark);font-weight:700;margin-bottom:12px}
-.tl ul{list-style:none;display:grid;gap:8px}
-.tl ul li{display:flex;gap:8px;color:var(--text-muted);font-size:var(--font-md)}
-.tl ul li svg{flex:none;margin-top:3px;color:var(--primary)}
+/* ===== S7 CTA ===== */
+.finale{background:var(--ink);color:#fff;border-radius:var(--radius-2xl);padding:48px 40px;text-align:center;position:relative;overflow:hidden}
+.finale::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 120% at 50% 0%,rgba(138,56,245,.45),transparent 60%)}
+.finale>*{position:relative;z-index:2}
+.finale h2{font-size:clamp(24px,4vw,38px);font-weight:800;line-height:1.3;max-width:18ch;margin:0 auto 16px}
+.finale p{opacity:.85;font-size:var(--font-lg);max-width:60ch;margin:0 auto 28px}
+.btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn{padding:15px 26px;border-radius:var(--radius-md);font-weight:800;font-size:var(--font-md);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-p{background:var(--gradient);color:#fff;box-shadow:var(--shadow-primary)}
+.btn-o{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.contact{margin-top:30px;display:inline-flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.contact span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);padding:8px 14px;border-radius:var(--radius-full);font-size:var(--font-sm)}
+.confirm{background:#fff;border:1px solid var(--warning);border-left:4px solid var(--warning);border-radius:var(--radius-xl);padding:22px 26px;margin-top:40px;box-shadow:var(--shadow-sm)}
+.confirm h4{display:flex;align-items:center;gap:8px;font-size:var(--font-lg);font-weight:800;color:#b45309;margin-bottom:12px}
+.confirm ol{margin:0 0 0 4px;padding-left:18px;color:var(--text-dark);display:grid;gap:6px}
+.confirm li{padding-left:4px}
 
-/* ===== CTA / 연락처 ===== */
-.cta{background:var(--gradient);color:#fff;border-radius:var(--radius-2xl);padding:40px;margin-top:40px;display:flex;flex-wrap:wrap;gap:28px;justify-content:space-between;align-items:center;box-shadow:var(--shadow-primary)}
-.cta h3{font-size:var(--font-2xl);font-weight:800;margin-bottom:8px}
-.cta p{opacity:.92}
-.contact{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-xl);padding:20px 24px;min-width:280px}
-.contact .row{display:flex;justify-content:space-between;gap:18px;padding:7px 0;font-size:var(--font-md)}
-.contact .row+.row{border-top:1px solid rgba(255,255,255,.18)}
-.contact .k{opacity:.8}
-.contact .v{font-weight:700}
-.placeholder{opacity:.7;font-style:normal;background:rgba(255,255,255,.16);padding:1px 8px;border-radius:6px}
-
-/* ===== 강팀 메모 + 푸터 ===== */
-.teamnote{background:#fff;border:1px dashed var(--primary);border-radius:var(--radius-xl);padding:22px 26px;margin-top:56px;box-shadow:var(--shadow-sm)}
-.teamnote h4{display:flex;align-items:center;gap:8px;font-size:var(--font-lg);font-weight:800;color:var(--primary-dark);margin-bottom:8px}
-.teamnote p{color:var(--text-muted)}
-.disclaimer{font-size:var(--font-sm);color:var(--text-muted);margin-top:16px}
-footer{padding:40px 0 60px;text-align:center;color:var(--text-muted);font-size:var(--font-sm)}
+footer{padding:42px 0 64px;text-align:center;color:var(--text-muted);font-size:var(--font-sm)}
 footer .logo{font-weight:800;font-size:var(--font-md);color:var(--text-dark)}
 
-/* ===== 포스터 띠 (분위기) ===== */
-.poster-strip{display:flex;gap:14px;overflow-x:auto;padding:8px 2px 4px;scroll-snap-type:x mandatory}
-.poster-strip img{width:150px;flex:none;aspect-ratio:3/4;object-fit:cover;border-radius:var(--radius-lg);scroll-snap-align:start;box-shadow:var(--shadow-md)}
-
-/* ===== 등장 애니메이션 ===== */
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
 .reveal.in{opacity:1;transform:none}
 
-/* ===== 반응형 ===== */
 @media (max-width:900px){
-  section{padding:72px 0}
-  .diag-grid,.mkt-grid,.strat-grid{grid-template-columns:1fr}
+  section{padding:76px 0}
+  .heat-wrap,.audit{grid-template-columns:1fr;gap:28px}
+  .ladder{grid-template-columns:1fr}
   .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .tl{grid-template-columns:1fr}
-  .ba{grid-template-columns:1fr}
-  .ba .arrow{margin:0 auto;transform:rotate(90deg)}
-  .cta{flex-direction:column;align-items:stretch}
+  .cover .stamp{position:static;display:block;margin-top:24px;opacity:.7}
 }
 @media (max-width:560px){
   .kpi-grid{grid-template-columns:1fr}
+  .payrow{grid-template-columns:1fr}
+  .payrow .ar{transform:rotate(90deg);margin:0 auto}
   .sec-h{font-size:var(--font-2xl)}
 }
 @media (prefers-reduced-motion:reduce){
@@ -187,277 +188,194 @@ footer .logo{font-weight:800;font-size:var(--font-md);color:var(--text-dark)}
 <body>
 <div class="progress" id="prog"></div>
 
-<!-- ============ 00 표지 ============ -->
+<!-- ===== S1 표지 ===== -->
 <header class="cover">
   <div class="cover-bg"></div>
+  <div class="lightslit"></div>
   <div class="wrap">
-    <span class="badge">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3"/><path d="M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.562Z"/></svg>
-      상상의 문 · 방탈출
+    <span class="kicker">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      상상의 문 × 강팀 · 웹 제안서
     </span>
-    <h1>문은 열렸는데,<br>손님이 안 들어옵니다</h1>
-    <p class="lead">상상의 문 웹사이트 리디자인 — 강팀 진단 &amp; 제안</p>
-    <div class="meta">
-      <span>2026.06 · v2</span>
-      <span>by 강팀 (PM·디자인·QA·마케팅)</span>
-      <span>외주 제안서 재검토본</span>
-    </div>
+    <h1>마지막 한 칸을<br><span class="gt">푸는 열쇠.</span></h1>
+    <p class="deck">빈 슬롯이 매출이 되는 예약 시스템</p>
+    <p class="sub">31개 테마, 6개 지점, 매일 수백 개의 시간 칸.<br>그중 몇 칸이 오늘도 비어 있는지, 사장님은 알고 계십니까.</p>
   </div>
+  <div class="stamp">2026.06 · 강팀 제안</div>
   <div class="scrolldown">
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
   </div>
 </header>
 
-<!-- ============ 01 진단 ============ -->
-<section id="s1">
+<!-- ===== S2 진짜 문제 ===== -->
+<section id="s2">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow gradient-text"><span class="num">01</span> · WHY NOW</span>
-      <h2 class="sec-h">이미 만든 할인이, 사이트에서 안 팔리고 있습니다</h2>
-      <p class="sec-sub">빈 슬롯(평일·조조·심야)을 채울 동선이 없습니다. 방탈출은 슬롯이 곧 재고 — 안 판 시간은 그날 매출에서 영영 사라집니다.</p>
+      <span class="eyebrow gradient-text">01 · The Real Problem</span>
+      <h2 class="sec-h">비어 있는 건 자리가 아니라 시간입니다</h2>
+      <p class="sec-sub">주말 저녁은 알아서 찹니다. 매출을 갉아먹는 건 평일 낮·조조·심야의 빈 칸입니다.</p>
     </div>
-    <div class="diag-grid">
-      <article class="diag reveal">
-        <div class="shot" style="background-image:linear-gradient(180deg,rgba(11,10,20,.1),rgba(11,10,20,.85)),url('assets/main_bg.webp')"></div>
-        <div class="body">
-          <span class="chip req">필수</span>
-          <h3>빈 슬롯이 안 보인다</h3>
-          <p>조조·심야·막타임 할인 슬롯은 이미 운영 데이터에 존재하지만, 메인에서 노출되지 않아 충동 예약으로 이어지지 못합니다.</p>
+    <div class="heat-wrap">
+      <div class="heat reveal">
+        <div class="grid" id="heatgrid"></div>
+        <div class="heat-cap">↑ 이 회색 빈칸이, 오늘 사라지는 돈입니다</div>
+        <div class="heat-legend">
+          <span><i style="background:var(--gradient)"></i>꽉 참(주말·인기)</span>
+          <span><i style="background:rgba(138,56,245,.28)"></i>부분</span>
+          <span><i style="background:#eceef2;border:1px dashed #d6d9e0"></i>빈 슬롯 = 손실</span>
         </div>
-      </article>
-      <article class="diag reveal">
-        <div class="shot" style="background-image:linear-gradient(180deg,rgba(11,10,20,.1),rgba(11,10,20,.85)),url('assets/sub_bgi.webp')"></div>
-        <div class="body">
-          <span class="chip req">필수</span>
-          <h3>모바일 예약 동선</h3>
-          <p>방탈출 검색·예약의 대부분이 모바일에서 일어납니다. 예약까지 가는 길에 끊김이 있으면 그 트래픽이 그대로 이탈합니다.</p>
-        </div>
-      </article>
-      <article class="diag reveal">
-        <div class="shot empty"><span>실제 화면 캡처 예정</span></div>
-        <div class="body">
-          <span class="chip rec">권장</span>
-          <h3>요금 표기 불일치</h3>
-          <p>예약금 안내(2만원)와 결제 화면의 청구 금액, 관리자 시드 요금이 서로 다릅니다. 신뢰에 직접 영향 — 정책 확정 후 통일이 필요합니다.</p>
-        </div>
-      </article>
-    </div>
-    <div class="factbox reveal">
-      <b>사실 확인:</b> 현재 사이트는 11개 페이지가 모두 <b>동작하는 정적 데모</b>입니다(순수 HTML, 외부 라이브러리 0, JS+localStorage). 예약 달력·예약 흐름·관리자 기능이 실제로 돕니다. 단 잔여석·요금은 화면에 "예시"로 명시된 샘플 데이터이며, 결제·알림·서버 저장·관리자 인증은 아직 미구현입니다(→ 06 로드맵 2단계).
-    </div>
-  </div>
-</section>
-
-<!-- ============ 02 시장 ============ -->
-<section id="s2" style="background:var(--light-card)">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow gradient-text"><span class="num">02</span> · MARKET</span>
-      <h2 class="sec-h">그들은 이렇게 슬롯을 채웁니다</h2>
-      <p class="sec-sub">경쟁사를 "부러움"이 아니라 "슬롯 채우는 방법"으로 봅니다. 따라 할 수 있는 것만 가져옵니다.</p>
-    </div>
-    <div class="mkt-grid">
-      <article class="mkt reveal">
-        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>
-        <h3>셜록홈즈 방탈출</h3>
-        <p>테마 세계관을 영화 포스터처럼 전면에 깔아, 방문 전부터 "이야기"를 먼저 경험하게 합니다. 호기심 → 예약 동기.</p>
-      </article>
-      <article class="mkt reveal">
-        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6"/></svg></div>
-        <h3>키이스케이프</h3>
-        <p>"몰입형 경험 콘텐츠를 만드는 브랜드"로 스스로를 정의합니다. 방이 아니라 이야기·공간·장치 전체를 하나의 콘텐츠로 판매.</p>
-      </article>
-      <article class="mkt us reveal">
-        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></div>
-        <h3>상상의 문은?</h3>
-        <p>31개 테마라는 콘텐츠는 이미 있습니다. 부족한 건 "지금 들어갈 수 있는 문"을 먼저 보여주는 동선입니다.</p>
-      </article>
-    </div>
-    <div class="conclusion reveal">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
-      결론: 우리도 '지금 예약 가능한 타임'을 메인에서 먼저 보여줘야 합니다.
-    </div>
-  </div>
-</section>
-
-<!-- ============ 03 전략 ============ -->
-<section id="s3">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow gradient-text"><span class="num">03</span> · STRATEGY</span>
-      <h2 class="sec-h">빈 슬롯을 파는 사이트로</h2>
-      <p class="sec-sub">예쁘게가 아니라, 예약 버튼까지 끊김 없이. 구현 부담이 낮고 매출에 직결되는 것부터.</p>
-    </div>
-    <div class="strat-grid">
-      <article class="strat lead reveal">
-        <span class="tag-main">메인 제안 · 1단계</span>
-        <div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg></div>
-        <h3>오늘 예약 가능 · 할인 중 타임 실시간 배지</h3>
-        <p>메인에 "지금 예약 가능 + 할인 중인 타임 N개"를 실시간으로 띄웁니다. 비수기 평일·심야 슬롯을 충동 예약으로 전환. 잔여석·할인 데이터는 이미 있으니 <b>읽어서 보여주기만</b> 하면 됩니다.</p>
-        <div class="tags"><span class="chip rec">효과 ↑ 비수기 충진율</span><span class="chip opt">난이도 낮음</span></div>
-      </article>
-      <article class="strat reveal">
-        <div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2"/><path d="M12 7v14"/><path d="M16 3a2 2 0 0 1 2 4H6a2 2 0 0 1 2-4 4 4 0 0 1 4 4 4 4 0 0 1 4-4Z"/></svg></div>
-        <h3>기프트카드 / 문 초대장</h3>
-        <p>커플·생일·회식 선물 수요를 매출로. 기존 결제 모듈을 재사용해 금액권 발행만 추가하면, 방문보다 결제가 먼저 일어나 현금흐름이 개선됩니다.</p>
-        <div class="tags"><span class="chip rec">효과 선결제·신규유입</span><span class="chip stage">2단계</span></div>
-      </article>
-      <article class="strat reveal">
-        <div class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></div>
-        <h3>클리어 랭킹 · 명예의 전당</h3>
-        <p>테마별 클리어 타임 랭킹과 "31개 중 N개 클리어" 도장판으로 재방문 동기를 만듭니다. 클리어 직후가 리뷰·인증샷의 골든타임.</p>
-        <div class="tags"><span class="chip rec">효과 재방문·UGC</span><span class="chip stage">2단계</span></div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 04 Before / After ============ -->
-<section id="s4" style="background:var(--light-card)">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="eyebrow gradient-text"><span class="num">04</span> · BEFORE → AFTER</span>
-      <h2 class="sec-h">바뀐 동선을 직접 보세요</h2>
-      <p class="sec-sub">'예쁨'이 아니라 '예약까지의 동선'을 봅니다. 확정되지 않은 수치는 적지 않습니다.</p>
-    </div>
-
-    <div class="ba reveal">
-      <div class="card before">
-        <div class="lbl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></svg> BEFORE</div>
-        <figure class="deck" style="background-image:url('assets/deck-before-after.png')"></figure>
-        <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa0ac" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg> 정보 전달 중심의 단조로운 구성</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9aa0ac" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg> 둘러보다 그냥 나가는 흐름</li>
-        </ul>
       </div>
-      <div class="arrow"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg></div>
-      <div class="card after">
-        <div class="lbl"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> AFTER</div>
-        <figure style="background-image:linear-gradient(180deg,rgba(4,3,10,.05),rgba(4,3,10,.5)),url('assets/hero_bgi.webp')"></figure>
-        <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 몰입형 스토리텔링 히어로 + 스크롤 연출</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 둘러보다 예약으로 이어지는 흐름</li>
-        </ul>
+      <div class="lossbox reveal lead-copy">
+        인기 테마의 토요일 8시는 광고를 안 해도 찹니다.<br>
+        매출을 갉아먹는 건 <span class="hit">화요일 2시, 목요일 첫 타임, 금요일 자정</span>처럼 그냥 비워두는 칸입니다.<br><br>
+        이미 지점마다 조조·심야·막타임 할인 슬롯을 만들어 두셨죠. 그런데 그 슬롯이 <b>손님 눈에 띄는 자리에 놓여 있습니까?</b><br><br>
+        빈 칸은 다음 날이면 사라집니다. 채우지 못한 시간은 환불도 안 되는 손실입니다.
       </div>
     </div>
+  </div>
+</section>
 
-    <div style="margin-bottom:14px">
-      <span class="callout"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg> 예약 진입 동선 단축</span>
-      <span class="callout"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg> 할인 타임 메인 노출</span>
-      <span class="callout"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg> 모바일 스크롤 인터랙션 대응</span>
+<!-- ===== S3 정직 진단 ===== -->
+<section id="s3" style="background:var(--light-card)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow gradient-text">02 · Honest Audit</span>
+      <h2 class="sec-h">데모는 잘 돌아갑니다. 그런데 손님이 멈추는 곳이 있습니다</h2>
+      <p class="sec-sub">"예쁘다"는 칭찬 대신, 손님 신뢰가 새는 지점을 짚습니다.</p>
     </div>
-
-    <p class="sec-sub" style="margin:6px 0 14px">31개 테마, 하나의 세계관 — 콘텐츠는 이미 충분합니다.</p>
-    <div class="poster-strip reveal">
-      <img src="assets/posters/1_a.webp" alt="테마 포스터" loading="lazy">
-      <img src="assets/posters/10_a.webp" alt="테마 포스터" loading="lazy">
-      <img src="assets/posters/11_a.webp" alt="테마 포스터" loading="lazy">
-      <img src="assets/posters/14_a.webp" alt="테마 포스터" loading="lazy">
-      <img src="assets/posters/16_a.webp" alt="테마 포스터" loading="lazy">
-      <img src="assets/posters/21_a.webp" alt="테마 포스터" loading="lazy">
-      <img src="assets/posters/22_a.webp" alt="테마 포스터" loading="lazy">
-      <img src="assets/posters/24_a.webp" alt="테마 포스터" loading="lazy">
+    <div class="audit">
+      <div class="reveal">
+        <p class="lead-copy" style="margin-bottom:18px">예약 안내에는 <b>"예약금 2만원만 선결제"</b>라고 적혀 있는데, 결제 화면은 <span class="hit">전액을 청구</span>합니다. 손님은 결제 직전에 멈칫합니다 — 이 한 칸이 예약 포기로 직결됩니다.</p>
+        <div class="paycompare">
+          <div class="payrow">
+            <div class="paycard bad">
+              <div class="tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></svg> 지금 (안내 ≠ 결제)</div>
+              <div class="line"><span>안내 문구</span><span class="amt">예약금 2만원</span></div>
+              <div class="line"><span>결제 화면 청구</span><span class="amt x">전액 12만원+</span></div>
+              <div class="line"><span>손님 반응</span><span class="amt x">이탈 ↑</span></div>
+            </div>
+            <div class="ar"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+            <div class="paycard good">
+              <div class="tag"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 수정 후 (일치)</div>
+              <div class="line"><span>선결제</span><span class="amt o">예약금 2만원</span></div>
+              <div class="line"><span>잔금</span><span class="amt">현장 결제</span></div>
+              <div class="line"><span>손님 반응</span><span class="amt o">안심 · 완료 ↑</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="sec-sub" style="margin-top:14px;font-size:var(--font-md)">※ 결제 정책은 사장님 확정 사항 — 어느 쪽이든 <b>안내와 결제 화면을 일치</b>시키는 게 핵심입니다.</p>
+      </div>
+      <div class="reveal">
+        <div class="checklist">
+          <div class="ck ok"><span class="bdg"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>동작합니다</b><p>예약 달력 · 예약 흐름 · 관리자 대시보드까지 이미 돕니다. 토대는 좋습니다.</p></div></div>
+          <div class="ck warn"><span class="bdg"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 9v4M12 17h.01"/><path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0Z"/></svg></span><div><b>안 맞습니다</b><p>결제 금액(안내 2만원 ↔ 전액 청구), 지점 수(푸터 7 ↔ 예약 6). 작은 숫자지만 "관리 안 됨" 인상을 줍니다.</p></div></div>
+          <div class="ck no"><span class="bdg"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></span><div><b>아직 화면뿐입니다</b><p>결제 PG · 문자 알림 · 예약 저장 · 관리자 로그인은 샘플 상태. <b>지금은 진짜 예약을 받을 수 없습니다.</b></p></div></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ============ 05 기대효과 ============ -->
-<section id="s5">
+<!-- ===== S4 솔루션 ===== -->
+<section id="s4">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow gradient-text"><span class="num">05</span> · IMPACT</span>
-      <h2 class="sec-h">무엇을, 어떻게 측정할까</h2>
-      <p class="sec-sub">근거 없는 약속 대신, 2주 기준선을 먼저 측정하고 A/B 테스트로 검증합니다. 아래 숫자는 <b>목표·측정 항목</b>입니다.</p>
+      <span class="eyebrow gradient-text">03 · The Move</span>
+      <h2 class="sec-h">빈 칸을 손님 눈앞으로 끌어옵니다</h2>
+      <p class="sec-sub">손님은 빈 시간표를 보지 않습니다. "지금 예약하면 싸지는 자리"를 봅니다.</p>
     </div>
-    <div class="kpi-grid">
-      <article class="kpi reveal">
-        <div class="big gradient-text">+15~25%</div>
-        <div class="lab">예약 전환율</div>
-        <div class="cap">GA 2주 기준선 → A/B 비교 (상대값 목표)</div>
-      </article>
-      <article class="kpi reveal">
-        <div class="big gradient-text">측정</div>
-        <div class="lab">모바일 이탈률</div>
-        <div class="cap">기준선 대비 절대 감소폭 측정</div>
-      </article>
-      <article class="kpi reveal">
-        <div class="big gradient-text">전후</div>
-        <div class="lab">비수기 슬롯 충진율</div>
-        <div class="cap">WC-1 실시간 배지 도입 전후 비교</div>
-      </article>
-      <article class="kpi reveal">
-        <div class="big gradient-text">측정</div>
-        <div class="lab">객단가 (인원 넛지)</div>
-        <div class="cap">+1명당 매출 영향 — 측정 예정</div>
-      </article>
-      <article class="kpi reveal">
-        <div class="big gradient-text">2단계</div>
-        <div class="lab">재방문 · 리뷰</div>
-        <div class="cap">WC-3 도입 후 측정</div>
-      </article>
-    </div>
-    <div class="factbox reveal"><b>왜 숫자를 약속하지 않나:</b> "몰입감 70% 향상" 같은 측정 불가능한 정밀 수치는 신뢰를 깎고 분쟁의 씨앗이 됩니다. 우리는 측정 가능한 지표만 올리고, 기준선과 검증 방식을 함께 제시합니다.</div>
+    <p class="lead-copy reveal" style="margin-bottom:26px">조조·심야·막타임처럼 <b>이미 있는 할인 슬롯</b>에, 손님이 들어온 순간 <b>실시간 특가 배지</b>를 붙입니다. 사장님은 새 가격표를 만들 필요가 없습니다 — 이미 만들어 둔 슬롯을 <span class="hit">그대로 켜기만</span> 하면 됩니다.</p>
+    <div class="theme-row reveal" id="themerow"></div>
   </div>
 </section>
 
-<!-- ============ 06 다음 단계 ============ -->
-<section id="s6" style="background:var(--light-card)">
+<!-- ===== S5 가격 사다리 ===== -->
+<section id="s5" style="background:var(--light-card)">
   <div class="wrap">
     <div class="sec-head reveal">
-      <span class="eyebrow gradient-text"><span class="num">06</span> · NEXT</span>
-      <h2 class="sec-h">이 문을 같이 열어 보시겠습니까</h2>
-      <p class="sec-sub">백엔드는 기존 자산을 재사용하므로 1단계는 빠르고 저렴합니다. 미구현 항목은 숨기지 않고 단계로 노출합니다.</p>
+      <span class="eyebrow gradient-text">04 · The Offer</span>
+      <h2 class="sec-h">한 번에 다 하지 않습니다. 돈 버는 순서대로</h2>
+      <p class="sec-sub">큰돈을 한 번에 쓰지 않으셔도 됩니다. 회수 빠른 1단계부터 엽니다.</p>
     </div>
-    <div class="tl">
-      <article class="node reveal">
-        <div class="dot">1</div>
-        <h3>진단 &amp; 동선</h3>
-        <div class="when">약 2주 · 저비용 (기존 데모 재사용)</div>
+    <div class="ladder">
+      <article class="step s1 reveal">
+        <div class="no">STEP 1</div>
+        <h3>새는 곳부터 막기</h3>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> GA 기준선 측정</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 실시간 예약가능·할인 배지(WC-1)</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 예약 동선 리디자인</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 결제 금액 불일치 수정 (2만원 선결제 정렬)</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 지점 수 6/7 통일</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 실시간 특가 배지 + GA 설치 · 카피 정리</li>
         </ul>
+        <div class="earn">💸 멈추던 결제 화면을 고쳐 예약 포기↓ · 빈 슬롯을 특가로 노출해 평일 매출 발생</div>
+        <div class="price">착수 ₩___<small>기존 데모 재사용 → 가장 빠르고 저렴</small></div>
       </article>
-      <article class="node reveal">
-        <div class="dot">2</div>
-        <h3>출시 전 필수</h3>
-        <div class="when">신규 개발 · 별도 견적</div>
+      <article class="step s2 reveal">
+        <div class="no">STEP 2</div>
+        <h3>진짜 예약 받기</h3>
         <ul>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 결제 PG 연동</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> SMS·이메일 예약 알림</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 서버 저장 (현재 localStorage)</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></svg> <b style="color:var(--secondary)">관리자 인증 (현재 없음 — 보안 필수)</b></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 카카오 · 문자 예약 알림</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 예약 서버 저장 · 관리자 로그인</li>
         </ul>
+        <div class="earn">💸 지금은 못 받는 진짜 예약을 받음 · 노쇼·중복·수기관리 비용 제거</div>
+        <div class="price">별도 견적<small>PG사·문자 단가에 따라 범위 확정 후</small></div>
       </article>
-      <article class="node reveal">
-        <div class="dot">3</div>
-        <h3>확장</h3>
-        <div class="when">매출 레버 추가</div>
+      <article class="step s3 reveal">
+        <div class="no">STEP 3</div>
+        <h3>더 벌기</h3>
         <ul>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 기프트카드 (WC-2)</li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 클리어 랭킹·명예의 전당 (WC-3)</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 기프트카드 (선결제 현금 확보)</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 클리어 랭킹 · 명예의 전당</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> 재방문 쿠폰 · 멤버십</li>
         </ul>
+        <div class="earn">💸 선결제 현금 + 재방문 락인 + SNS 인증 신규 유입 (LTV·신규 동시)</div>
+        <div class="price">확장 옵션<small>1·2단계 성과 보고 결정</small></div>
       </article>
     </div>
+  </div>
+</section>
 
-    <div class="cta reveal">
-      <div>
-        <h3>2주 무료 진단부터 시작합니다</h3>
-        <p>현재 사이트의 전환율·모바일 이탈을 먼저 재고, 그 기준선 위에서 개선을 증명합니다.</p>
+<!-- ===== S6 정직 KPI ===== -->
+<section id="s6">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow gradient-text">05 · We Measure</span>
+      <h2 class="sec-h">"전환율 70% 상승" 같은 말은 하지 않겠습니다</h2>
+      <p class="sec-sub">2주 기준선을 먼저 깔고, A/B로 증명합니다. 아래는 약속이 아니라 측정 항목입니다.</p>
+    </div>
+    <div class="kpi-grid">
+      <article class="kpi reveal"><div class="big gradient-text">측정 예정</div><div class="lab">예약 전환율</div><div class="cap">GA4 퍼널 · 결제화면 이탈 지점 추적 → 2주 기준선 후 A/B</div></article>
+      <article class="kpi reveal"><div class="big gradient-text">전 / 후</div><div class="lab">결제화면 이탈률</div><div class="cap">1단계 결제 불일치 수정 전·후 비교</div></article>
+      <article class="kpi reveal"><div class="big gradient-text">측정 예정</div><div class="lab">빈 슬롯 점유율</div><div class="cap">평일낮·조조·심야 · 특가 배지 ON/OFF A/B</div></article>
+      <article class="kpi reveal"><div class="big gradient-text">측정 예정</div><div class="lab">특가 배지 CTR</div><div class="cap">배지 클릭 → 예약 진입 비율</div></article>
+    </div>
+    <div class="lossbox reveal" style="border-left-color:var(--primary);margin-top:28px"><b>왜 숫자를 약속하지 않나:</b> 근거 없는 정밀 수치는 신뢰를 깎고 분쟁의 씨앗이 됩니다. 근거가 생기기 전엔 "측정 예정"이라 정직하게 적습니다 — 이 정직함이 강팀의 차별점입니다.</div>
+  </div>
+</section>
+
+<!-- ===== S7 CTA ===== -->
+<section id="s7" style="background:var(--light-card)">
+  <div class="wrap">
+    <div class="finale reveal">
+      <h2>가장 어려운 방은,<br>시작 버튼 앞에서 멈춘 손님입니다</h2>
+      <p>사이트는 이미 절반쯤 와 있습니다. 새는 곳을 막고, 빈 칸을 무대에 올리는 것 — 1단계는 그것부터 시작합니다. 큰돈을 한 번에 쓰지 않으셔도 됩니다. 버는 순서대로 열겠습니다.</p>
+      <div class="btns">
+        <a class="btn btn-p" href="#">빈 슬롯 진단부터 받기</a>
+        <a class="btn btn-o" href="#">1단계 견적 받기</a>
       </div>
       <div class="contact">
-        <div class="row"><span class="k">회사</span><span class="v placeholder">[회사명 입력]</span></div>
-        <div class="row"><span class="k">담당</span><span class="v placeholder">[담당자 입력]</span></div>
-        <div class="row"><span class="k">전화</span><span class="v placeholder">[전화번호 입력]</span></div>
-        <div class="row"><span class="k">이메일</span><span class="v placeholder">[이메일 입력]</span></div>
+        <span>담당 : [입력]</span><span>전화 : [입력]</span><span>카카오채널 : [입력]</span>
       </div>
     </div>
 
-    <div class="teamnote reveal">
-      <h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c-1 0-3-1-3-3s2-3 2-3-2-1-3-1-3 2-3 2-2-2-3-2-3 1-3 1 2 1 2 3-2 3-3 3 1 3 3 3 3-2 3-2 1 2 3 2 3-1 3-1-2-1-2-3 2-3 3-3Z"/></svg> 강팀 검토 메모</h4>
-      <p>이 보고서는 외주 제안서(Canva 10장)를 강팀이 검토·재구성한 <b>v2</b>입니다. 주요 수정: ① placeholder 연락처(reallygreatsite.com 등) 제거 · ② 근거 없는 수치(30/60/70/50%) → 측정 목표로 전환 · ③ 무관한 마케팅 대행 문구 삭제 · ④ 중복 슬라이드 정리 · ⑤ 미구현(결제·인증·서버) 정직 노출.</p>
-      <p class="disclaimer">※ 본 보고서의 수치는 측정 목표이며, 지점 수·예약금 정책·결제(PG) 연동은 확정 후 반영합니다. 연락처 자리(<span class="placeholder">[…]</span>)는 발송 전 실제 정보로 교체하세요.</p>
+    <div class="confirm reveal">
+      <h4><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="m10.3 3.9-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3l-8-14a2 2 0 0 0-3.4 0Z"/></svg> 발송 전 확정 필요 4가지 (본문 신뢰도 보호용 분리 표기)</h4>
+      <ol>
+        <li>실제 연락처 — 담당자 · 전화 · 카카오채널 (위 [입력] 자리)</li>
+        <li>지점 수 — 푸터 7개점 vs 예약 6개점 중 실제 운영 기준</li>
+        <li>예약금 정책 — "2만원 선결제" vs 전액 청구 중 확정</li>
+        <li>결제 PG사 — 도입 시 정산·제3자 제공 고지 범위</li>
+      </ol>
     </div>
   </div>
 </section>
@@ -465,24 +383,59 @@ footer .logo{font-weight:800;font-size:var(--font-md);color:var(--text-dark)}
 <footer>
   <div class="wrap">
     <div class="logo">상상의 문 × 강팀</div>
-    <p style="margin-top:6px">웹사이트 리디자인 진단 &amp; 제안 · 2026.06 · v2</p>
+    <p style="margin-top:6px">마지막 한 칸을 푸는 열쇠 · 웹 제안서 · 2026.06 · 아뱅 주도</p>
   </div>
 </footer>
 
 <script>
 // 진행바
 var prog=document.getElementById('prog');
-function onScroll(){
-  var h=document.documentElement;
-  var sc=(h.scrollTop)/(h.scrollHeight-h.clientHeight);
-  prog.style.width=(sc*100)+'%';
-}
+function onScroll(){var h=document.documentElement;prog.style.width=((h.scrollTop)/(h.scrollHeight-h.clientHeight)*100)+'%';}
 document.addEventListener('scroll',onScroll,{passive:true});onScroll();
 
+// 히트맵 — 빈칸=손실 시각화 (행:시간대, 열:월~일)
+(function(){
+  var days=['','월','화','수','목','금','토','일'];
+  var times=['10시','12시','14시','16시','19시','21시','23시'];
+  // 0 빈칸(loss 강조), 1 빈칸, 2 부분, 3 꽉참 — 주말저녁/금요일밤 위주로 채움
+  var pat=[
+    [1,1,1,1,1,1,2,2], // 10시
+    [0,0,1,0,1,1,2,2], // 12시  ← 평일 낮 손실
+    [0,0,0,1,0,1,2,2], // 14시  ← 평일 낮 손실
+    [1,1,1,1,1,2,3,3], // 16시
+    [2,2,2,2,3,3,3,3], // 19시  주말 꽉참
+    [2,2,2,2,3,3,3,2], // 21시
+    [1,0,1,0,1,3,3,1]  // 23시  ← 심야, 금토만 참
+  ];
+  var cls=['loss','empty','mid','full'];
+  var g=document.getElementById('heatgrid');
+  // 헤더행
+  days.forEach(function(d,i){var e=document.createElement('div');e.className=i?'hd':'rh';e.textContent=d;g.appendChild(e);});
+  pat.forEach(function(row,r){
+    var rh=document.createElement('div');rh.className='rh';rh.textContent=times[r];g.appendChild(rh);
+    row.forEach(function(v){var c=document.createElement('div');c.className='cell '+cls[v];g.appendChild(c);});
+  });
+})();
+
+// 테마 카드 (라이브 특가 배지)
+(function(){
+  var data=[
+    {img:'1_a.webp',n:'테마 ①',t:'오늘 14:00 · 남은 1팀',live:1},
+    {img:'10_a.webp',n:'테마 ②',t:'평일 조조 특가',live:1},
+    {img:'11_a.webp',n:'테마 ③',t:'주말 19:00',live:0},
+    {img:'14_a.webp',n:'테마 ④',t:'심야 막타임 특가',live:1},
+    {img:'16_a.webp',n:'테마 ⑤',t:'예약 가능',live:0},
+    {img:'21_a.webp',n:'테마 ⑥',t:'오늘 16:00 · 마감 임박',live:1}
+  ];
+  var row=document.getElementById('themerow');
+  data.forEach(function(d){
+    var badge=d.live?'<div class="livebadge"><span class="dot"></span>지금 특가</div>':'';
+    row.innerHTML+='<div class="tcard">'+badge+'<img src="assets/posters/'+d.img+'" alt="테마 포스터" loading="lazy"><div class="meta"><h4>'+d.n+'</h4><span>'+d.t+'</span></div></div>';
+  });
+})();
+
 // 등장 애니메이션
-var io=new IntersectionObserver(function(es){
-  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-},{threshold:.12});
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
 </script>
 </body>
