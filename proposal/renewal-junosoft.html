@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상상의문 리뉴얼 제안서 | JUNOSOFT</title>
+<meta name="description" content="상상의문 방탈출 웹사이트 리뉴얼 제안 — 몰입형 브랜드 경험과 예약 전환 중심.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+
+:root{
+  /* 실제 리뉴얼 시안(이미지 2)의 톤에 맞춘 네이비 + 골드 팔레트 */
+  --bg:#0a0c14;
+  --bg-2:#11141f;
+  --panel:#161a28;
+  --panel-2:#1c2133;
+  --line:#2a3149;
+  --line-soft:#222840;
+  --gold:#e7c87a;
+  --gold-2:#c9a14a;
+  --gold-grad:linear-gradient(135deg,#f3dca0 0%,#c9a14a 100%);
+  --ink:#f4f5fb;
+  --muted:#aab2c8;
+  --faint:#7c849c;
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow:0 24px 60px rgba(0,0,0,.45);
+  --font:'Pretendard Variable','Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font);}
+html{scroll-behavior:smooth;scroll-snap-type:y mandatory;}
+body{background:var(--bg);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+img{display:block;max-width:100%;}
+
+/* 진행 막대 */
+.prog{position:fixed;top:0;left:0;height:3px;width:0;background:var(--gold-grad);z-index:200;transition:width .12s linear;}
+
+/* 오른쪽 섹션 점 내비 */
+.dots{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:150;display:flex;flex-direction:column;gap:14px;}
+.dots a{width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(231,200,122,.5);background:transparent;transition:.25s;}
+.dots a.on{background:var(--gold);border-color:var(--gold);transform:scale(1.25);box-shadow:0 0 0 4px rgba(231,200,122,.15);}
+@media(max-width:900px){.dots{display:none;}}
+
+/* 한 장면 = 한 화면 (스크롤 스냅) */
+section{
+  position:relative;
+  min-height:100vh;
+  scroll-snap-align:start;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:88px 7% 72px;
+}
+.container{max-width:1300px;width:100%;}
+
+/* 등장 애니메이션 */
+.reveal{opacity:0;transform:translateY(48px);transition:opacity .9s ease,transform .9s ease;}
+.reveal.active{opacity:1;transform:none;}
+
+/* 공통 타이포 */
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.eyebrow::before{content:"";width:28px;height:1.5px;background:var(--gold-2);display:inline-block;}
+.title{font-size:clamp(2rem,4.4vw,3.4rem);font-weight:800;line-height:1.2;letter-spacing:-.02em;text-align:center;}
+.title .gt{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.sub{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--muted);line-height:1.85;text-align:center;max-width:760px;margin:22px auto 0;}
+
+/* ===== 00 히어로 ===== */
+.hero{text-align:center;justify-content:center;overflow:hidden;}
+.hero .bg{position:absolute;inset:0;
+  background:radial-gradient(120% 80% at 50% 20%,rgba(231,200,122,.10),transparent 60%),
+             linear-gradient(180deg,#0c1020 0%,#0a0c14 55%,#070810 100%);
+}
+.hero .bg::after{content:"";position:absolute;inset:0;
+  background:url("assets/renewal/after.jpg") center/cover no-repeat;
+  opacity:.34;mix-blend-mode:luminosity;
+}
+.hero .vig{position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 45%,transparent,rgba(7,8,16,.85));}
+.hero .container{position:relative;z-index:2;}
+.hero .doc{font-size:14px;letter-spacing:.32em;color:var(--gold);font-weight:600;text-transform:uppercase;}
+.hero h1{font-size:clamp(3.4rem,9vw,7rem);font-weight:800;letter-spacing:-.01em;margin:18px 0 16px;
+  text-shadow:0 8px 40px rgba(0,0,0,.6);}
+.hero .lead{font-size:clamp(1.05rem,2vw,1.45rem);color:#dfe3f0;font-weight:300;letter-spacing:.02em;}
+.hero .by{margin-top:34px;display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);
+  border:1px solid var(--line);background:rgba(22,26,40,.5);padding:9px 18px;border-radius:999px;backdrop-filter:blur(6px);}
+.hero .by b{color:var(--gold);font-weight:700;letter-spacing:.04em;}
+.scroll{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:3;font-size:11px;letter-spacing:.4em;color:var(--faint);display:flex;flex-direction:column;align-items:center;gap:10px;}
+.scroll .ln{width:1px;height:42px;background:linear-gradient(var(--gold),transparent);animation:drop 1.8s infinite;}
+@keyframes drop{0%{opacity:.2;transform:scaleY(.4);transform-origin:top;}50%{opacity:1;}100%{opacity:.2;transform:scaleY(1);transform-origin:top;}}
+
+/* ===== 01 리뉴얼을 제안드립니다 (before / after) ===== */
+.compare{display:grid;grid-template-columns:1fr auto 1fr;gap:34px;align-items:center;margin-top:54px;width:100%;}
+.frame{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:var(--panel);box-shadow:var(--shadow);}
+.frame .ar{aspect-ratio:16/10;width:100%;}
+.frame img{width:100%;height:100%;object-fit:cover;}
+.frame .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.78);font-weight:600;letter-spacing:.04em;text-align:center;padding:20px;font-size:.95rem;}
+.frame.before .ph{background:linear-gradient(135deg,#8fbce8 0%,#f4a6c0 100%);}
+.frame.after .ph{background:linear-gradient(160deg,#22304f 0%,#0c1226 75%);color:var(--gold);}
+.frame .tag{position:absolute;top:14px;left:14px;z-index:2;font-size:12px;font-weight:700;letter-spacing:.06em;
+  padding:6px 12px;border-radius:999px;backdrop-filter:blur(6px);}
+.frame.before .tag{background:rgba(10,12,20,.6);border:1px solid var(--line);color:var(--muted);}
+.frame.after .tag{background:rgba(231,200,122,.14);border:1px solid var(--gold-2);color:var(--gold);}
+.compare .mid{display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--gold);}
+.compare .mid svg{width:46px;height:46px;}
+.compare .mid span{font-size:12px;letter-spacing:.2em;color:var(--faint);}
+@media(max-width:900px){.compare{grid-template-columns:1fr;}.compare .mid svg{transform:rotate(90deg);}}
+
+/* ===== 02 현재 사이트 분석 (평가 + 근거) ===== */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:52px;width:100%;}
+.card{background:linear-gradient(180deg,var(--panel) 0%,var(--bg-2) 100%);border:1px solid var(--line-soft);
+  border-radius:var(--radius);padding:30px 26px;display:flex;flex-direction:column;gap:14px;transition:.3s;}
+.card:hover{border-color:var(--gold-2);transform:translateY(-6px);box-shadow:var(--shadow);}
+.card .ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:rgba(231,200,122,.1);border:1px solid var(--line);color:var(--gold);}
+.card .ic svg{width:24px;height:24px;}
+.card h3{font-size:1.18rem;font-weight:700;}
+.card .badge{align-self:flex-start;font-size:12px;font-weight:700;padding:4px 11px;border-radius:999px;letter-spacing:.02em;}
+.badge.good{background:rgba(120,200,150,.14);color:#8fdcab;border:1px solid rgba(120,200,150,.35);}
+.badge.mid{background:rgba(231,200,122,.14);color:var(--gold);border:1px solid var(--gold-2);}
+.badge.low{background:rgba(232,120,120,.14);color:#f0a0a0;border:1px solid rgba(232,120,120,.4);}
+.card p{font-size:.92rem;color:var(--muted);line-height:1.7;}
+@media(max-width:1000px){.cards{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.cards{grid-template-columns:1fr;}}
+
+/* ===== 03 사용자 행동 흐름 (플로우) ===== */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:54px;width:100%;position:relative;}
+.flow .node{position:relative;padding:0 14px;text-align:center;display:flex;flex-direction:column;align-items:center;}
+.flow .node .num{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:1.1rem;background:var(--panel);border:1.5px solid var(--line);color:var(--gold);z-index:2;}
+.flow .node .bar{position:absolute;top:27px;left:50%;width:100%;height:2px;background:var(--line);z-index:1;}
+.flow .node:last-child .bar{display:none;}
+.flow .node h4{margin-top:18px;font-size:1.05rem;font-weight:700;}
+.flow .node p{margin-top:8px;font-size:.85rem;color:var(--muted);line-height:1.6;}
+.flow .node.risk .num{border-color:#f0a0a0;color:#f0a0a0;box-shadow:0 0 0 5px rgba(232,120,120,.12);}
+.flow .node.risk .bar{background:linear-gradient(90deg,var(--line),#f0a0a0);}
+.flow .node.win .num{background:var(--gold-grad);border-color:var(--gold);color:#1a1305;}
+.flow .drop{margin-top:46px;text-align:center;font-size:.95rem;color:var(--muted);}
+.flow .drop b{color:#f0a0a0;}
+@media(max-width:900px){
+  .flow{grid-template-columns:1fr;gap:22px;}
+  .flow .node{flex-direction:row;text-align:left;gap:16px;align-items:flex-start;}
+  .flow .node .num{flex:none;}
+  .flow .node .bar{display:none;}
+  .flow .node h4{margin-top:8px;}
+}
+
+/* ===== 04 리뉴얼 핵심 전략 (밝게) ===== */
+.strategy{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:52px;width:100%;}
+.strat{position:relative;border-radius:var(--radius);padding:40px 38px;overflow:hidden;
+  background:linear-gradient(135deg,#1f263c 0%,#171b2b 100%);border:1px solid var(--line);transition:.3s;}
+.strat::before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:var(--gold-grad);opacity:.85;}
+.strat:hover{transform:translateY(-5px);border-color:var(--gold-2);box-shadow:var(--shadow);}
+.strat .top{display:flex;align-items:center;gap:16px;margin-bottom:16px;}
+.strat .ic{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  background:var(--gold-grad);color:#1a1305;flex:none;}
+.strat .ic svg{width:26px;height:26px;}
+.strat .en{font-size:.78rem;letter-spacing:.16em;color:var(--gold);text-transform:uppercase;font-weight:700;}
+.strat h3{font-size:1.4rem;font-weight:800;margin-top:2px;}
+.strat p{font-size:1rem;color:#c7cee0;line-height:1.75;}
+@media(max-width:900px){.strategy{grid-template-columns:1fr;}}
+
+/* ===== 05 리뉴얼 시안 ===== */
+.mockup{margin-top:48px;width:100%;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);
+  background:var(--panel);box-shadow:var(--shadow);position:relative;}
+.mockup .bar{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--bg-2);}
+.mockup .bar i{width:11px;height:11px;border-radius:50%;background:#39405a;display:inline-block;}
+.mockup .bar .url{margin-left:14px;font-size:.82rem;color:var(--faint);letter-spacing:.02em;}
+.mockup .shot{aspect-ratio:16/8.4;position:relative;}
+.mockup .shot img{width:100%;height:100%;object-fit:cover;}
+.mockup .shot .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#22304f 0%,#0c1226 75%);color:var(--gold);font-weight:600;letter-spacing:.04em;}
+.mockup .cta{position:absolute;right:20px;bottom:20px;z-index:3;}
+.live{display:inline-flex;align-items:center;gap:9px;background:var(--gold-grad);color:#1a1305;font-weight:700;
+  font-size:.95rem;padding:13px 22px;border-radius:999px;text-decoration:none;transition:.25s;box-shadow:0 10px 30px rgba(201,161,74,.35);}
+.live:hover{transform:translateY(-2px);}
+.live svg{width:18px;height:18px;}
+
+/* ===== 06 예상 효과 ===== */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:52px;width:100%;}
+.stat{background:linear-gradient(180deg,var(--panel) 0%,var(--bg-2) 100%);border:1px solid var(--line-soft);
+  border-radius:var(--radius);padding:46px 30px;text-align:center;}
+.stat h2{font-size:clamp(3rem,6vw,4.4rem);font-weight:800;line-height:1;
+  background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.stat p{font-size:1.05rem;color:var(--ink);margin-top:14px;font-weight:600;}
+.stat .m{font-size:.82rem;color:var(--faint);margin-top:8px;}
+.stat-note{margin-top:30px;font-size:.9rem;color:var(--faint);text-align:center;max-width:680px;margin-left:auto;margin-right:auto;line-height:1.7;}
+@media(max-width:900px){.stats{grid-template-columns:1fr;}}
+
+/* ===== 07 푸터 ===== */
+.footer{background:radial-gradient(80% 70% at 50% 0%,rgba(231,200,122,.08),transparent 60%),#070810;text-align:center;}
+.footer h2{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;margin-bottom:18px;line-height:1.25;}
+.footer .gt{background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.footer .who{margin-top:30px;font-size:1.05rem;color:var(--muted);line-height:1.9;}
+.footer .who b{color:var(--gold);font-weight:700;letter-spacing:.04em;}
+.footer .contact{margin-top:26px;display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+.footer .contact span{border:1px solid var(--line);background:rgba(22,26,40,.5);padding:9px 16px;border-radius:999px;font-size:.88rem;color:var(--muted);}
+
+</style>
+</head>
+<body>
+
+<div class="prog" id="prog"></div>
+
+<nav class="dots" id="dots">
+  <a href="#s0" class="on"></a><a href="#s1"></a><a href="#s2"></a><a href="#s3"></a>
+  <a href="#s4"></a><a href="#s5"></a><a href="#s6"></a><a href="#s7"></a>
+</nav>
+
+<!-- ===== 00 히어로 ===== -->
+<section class="hero" id="s0">
+  <div class="bg"></div>
+  <div class="vig"></div>
+  <div class="container reveal">
+    <p class="doc">Official Website Renewal Proposal</p>
+    <h1>상상의문</h1>
+    <p class="lead">문 너머의 이야기로 초대하는, 새로운 웹 경험을 제안합니다</p>
+    <div class="by">Presented by <b>JUNOSOFT</b> · Creative Digital Agency</div>
+  </div>
+  <div class="scroll"><span>SCROLL</span><span class="ln"></span></div>
+</section>
+
+<!-- ===== 01 리뉴얼을 제안드립니다 ===== -->
+<section id="s1">
+  <div class="container reveal">
+    <div style="text-align:center"><span class="eyebrow">Proposal</span></div>
+    <h2 class="title">리뉴얼을 <span class="gt">제안드립니다</span></h2>
+    <p class="sub">
+      상상의문은 단순한 예약 플랫폼이 아니라, 사용자가 스토리 속 주인공이 되는 몰입형 콘텐츠 브랜드입니다.<br>
+      지금의 웹사이트는 정보 전달 중심이라 브랜드 특유의 긴장감과 기대감을 충분히 전하지 못합니다.<br>
+      <b style="color:var(--gold)">'문을 여는 순간의 설렘'</b>을 첫 화면부터 느끼게 하는 것 — 그것이 이번 리뉴얼의 목표입니다.
+    </p>
+
+    <div class="compare">
+      <div class="frame before">
+        <span class="tag">BEFORE · 현재</span>
+        <div class="ar"><img src="assets/renewal/before.jpg" alt="현재 상상의문 웹사이트" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="ph" style="display:none">현재 사이트<br>(assets/renewal/before.jpg)</div></div>
+      </div>
+      <div class="mid">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        <span>RENEWAL</span>
+      </div>
+      <div class="frame after">
+        <span class="tag">AFTER · 리뉴얼</span>
+        <div class="ar"><img src="assets/renewal/after.jpg" alt="리뉴얼 상상의문 웹사이트" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="ph" style="display:none">리뉴얼 시안<br>(assets/renewal/after.jpg)</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 02 현재 사이트 분석 ===== -->
+<section id="s2" style="background:var(--bg-2)">
+  <div class="container reveal">
+    <div style="text-align:center"><span class="eyebrow">Analysis</span></div>
+    <h2 class="title">현재 사이트 분석</h2>
+    <p class="sub">잘하고 있는 점은 살리고, 아쉬운 점은 이유까지 짚었습니다. 평가는 사전 진단 기준이며, 정확한 수치는 착수 시 데이터로 확정합니다.</p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></svg></div>
+        <h3>브랜드성</h3>
+        <span class="badge good">우수</span>
+        <p>로고·네이밍·콘셉트는 명확합니다. 다만 파스텔 톤이 방탈출 특유의 미스터리·긴장감과 어긋나, 브랜드가 가진 '몰입의 힘'을 시각적으로 덜 보여줍니다.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>몰입감</h3>
+        <span class="badge low">개선 필요</span>
+        <p>정적인 단일 히어로와 정보 나열식 구성이라 스크롤할 동기가 약합니다. 스토리가 전개되지 않아 방문자가 세계관에 빠져들기 전에 이탈합니다.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg></div>
+        <h3>이미지 활용</h3>
+        <span class="badge low">개선 필요</span>
+        <p>테마별 고유 비주얼 대신 범용 3D 렌더에 가까워 차별화가 약합니다. 대형 이미지 영역이 부족해 '보는 재미'와 클릭 욕구가 떨어집니다.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+        <h3>예약 유도</h3>
+        <span class="badge mid">보통</span>
+        <p>'예약하기' 버튼이 작고 배경과 대비가 약해 눈에 덜 띕니다. 테마 → 날짜 → 결제까지 동선이 길어, 마음먹은 방문자도 중간에 멈추기 쉽습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 03 사용자 행동 흐름 ===== -->
+<section id="s3">
+  <div class="container reveal">
+    <div style="text-align:center"><span class="eyebrow">User Flow</span></div>
+    <h2 class="title">사용자 행동 흐름</h2>
+    <p class="sub">방문자는 이 다섯 단계를 거쳐 예약에 이릅니다. 어느 구간에서 마음이 식는지 보이면, 어디를 고쳐야 할지도 분명해집니다.</p>
+
+    <div class="flow">
+      <div class="node">
+        <div class="num">1</div><div class="bar"></div>
+        <h4>사이트 방문</h4>
+        <p>광고·SNS·검색으로 유입. 첫 3초의 인상이 이탈을 가릅니다.</p>
+      </div>
+      <div class="node">
+        <div class="num">2</div><div class="bar"></div>
+        <h4>테마 탐색</h4>
+        <p>어떤 방이 있는지 훑어봅니다. 비주얼이 약하면 흥미가 식습니다.</p>
+      </div>
+      <div class="node">
+        <div class="num">3</div><div class="bar"></div>
+        <h4>스토리 몰입</h4>
+        <p>세계관·난이도·후기를 확인하며 기대감이 쌓이는 핵심 구간.</p>
+      </div>
+      <div class="node risk">
+        <div class="num">4</div><div class="bar"></div>
+        <h4>예약 고려</h4>
+        <p>인원·날짜·지점을 확인. 동선이 길고 마찰이 크면 망설입니다.</p>
+      </div>
+      <div class="node win">
+        <div class="num">5</div>
+        <h4>예약 완료 / 이탈</h4>
+        <p>전환 또는 이탈. 현재는 이 직전 구간의 이탈이 큰 것으로 추정됩니다.</p>
+      </div>
+    </div>
+    <p class="drop">붉게 표시된 <b>4단계(예약 고려)</b>가 가장 큰 이탈 지점 — 리뉴얼의 1순위 개선 영역입니다.</p>
+  </div>
+</section>
+
+<!-- ===== 04 리뉴얼 핵심 전략 ===== -->
+<section id="s4" style="background:var(--bg-2)">
+  <div class="container reveal">
+    <div style="text-align:center"><span class="eyebrow">Strategy</span></div>
+    <h2 class="title">리뉴얼 핵심 전략</h2>
+    <p class="sub">'문을 여는 경험'을 첫 화면부터 예약 완료까지 일관되게 잇는 네 가지 축입니다.</p>
+
+    <div class="strategy">
+      <div class="strat">
+        <div class="top">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.5 2.6 5.9 5.9a2 2 0 0 1 0 2.8l-8.5 8.5a2 2 0 0 1-2.8 0L4.1 14a2 2 0 0 1 0-2.8L12.7 2.6a2 2 0 0 1 2.8 0Z"/><circle cx="9" cy="9" r="1.5"/></svg></div>
+          <div><div class="en">Immersive Design</div><h3>몰입형 비주얼</h3></div>
+        </div>
+        <p>시네마틱한 대형 이미지와 영상으로 문 너머의 분위기를 첫 화면부터 전달합니다. 네이비+골드의 무드로 미스터리를 시각화합니다.</p>
+      </div>
+      <div class="strat">
+        <div class="top">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div><div class="en">Storytelling</div><h3>스크롤 기반 전개</h3></div>
+        </div>
+        <p>스크롤을 내릴수록 이야기가 한 장면씩 펼쳐지도록 구성해, 방문자가 자연스럽게 세계관에 빠져들고 예약까지 이어지게 합니다.</p>
+      </div>
+      <div class="strat">
+        <div class="top">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg></div>
+          <div><div class="en">Visual Contents</div><h3>테마 중심 비주얼</h3></div>
+        </div>
+        <p>테마마다 고유한 키 비주얼을 대형 이미지로 배치해 '보는 재미'를 살리고, 각 방의 개성과 난이도를 한눈에 전합니다.</p>
+      </div>
+      <div class="strat">
+        <div class="top">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></div>
+          <div><div class="en">Mobile First</div><h3>모바일 예약 최적화</h3></div>
+        </div>
+        <p>대부분의 예약이 일어나는 모바일을 기준으로 설계합니다. 테마 → 시간 → 결제를 한 흐름으로 잇고 간편결제로 마찰을 줄입니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 05 리뉴얼 시안 ===== -->
+<section id="s5">
+  <div class="container reveal">
+    <div style="text-align:center"><span class="eyebrow">Mockup</span></div>
+    <h2 class="title">제작된 리뉴얼 시안</h2>
+    <p class="sub">아래는 실제로 제작한 리뉴얼 디자인입니다. 라이브로 직접 둘러보실 수 있습니다.</p>
+
+    <div class="mockup">
+      <div class="bar"><i></i><i></i><i></i><span class="url">doorlove1234-coder.github.io/sangsangDoor</span></div>
+      <div class="shot">
+        <img src="assets/renewal/after.jpg" alt="리뉴얼 시안" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="ph" style="display:none">리뉴얼 시안 (assets/renewal/after.jpg)</div>
+        <div class="cta">
+          <a class="live" href="https://doorlove1234-coder.github.io/sangsangDoor/index.html" target="_blank" rel="noopener">
+            라이브로 보기
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 06 예상 효과 ===== -->
+<section id="s6" style="background:var(--bg-2)">
+  <div class="container reveal">
+    <div style="text-align:center"><span class="eyebrow">Expected Impact</span></div>
+    <h2 class="title">예상 효과</h2>
+    <p class="sub">리뉴얼의 목표 지표입니다. 정확한 수치는 현재 데이터를 측정한 뒤 함께 확정합니다.</p>
+
+    <div class="stats">
+      <div class="stat"><h2>+35%</h2><p>체류시간 증가</p><span class="m">스크롤 몰입형 구성 기준 목표</span></div>
+      <div class="stat"><h2>+28%</h2><p>예약 전환율 증가</p><span class="m">예약 동선 단축·간편결제 기준 목표</span></div>
+      <div class="stat"><h2>+42%</h2><p>SNS 공유 증가</p><span class="m">테마 키 비주얼·공유 카드 기준 목표</span></div>
+    </div>
+    <p class="stat-note">위 수치는 동종 리뉴얼 사례에 기반한 <b style="color:var(--gold)">목표치</b>입니다. 착수 시 현재 지표를 측정해 기준선을 잡고, 매월 결과를 함께 점검합니다.</p>
+  </div>
+</section>
+
+<!-- ===== 07 푸터 ===== -->
+<section class="footer" id="s7">
+  <div class="container reveal">
+    <h2>상상의문의 <span class="gt">새로운 경험</span>을<br>제안합니다</h2>
+    <p class="who"><b>JUNOSOFT</b><br>Creative Digital Agency</p>
+    <div class="contact">
+      <span>📧 contact@junosoft.kr</span>
+      <span>📞 [연락처 입력]</span>
+    </div>
+  </div>
+</section>
+
+<script>
+// 스크롤 진행 막대 + 등장 애니메이션 + 점 내비 동기화
+const prog = document.getElementById('prog');
+const reveals = document.querySelectorAll('.reveal');
+const sections = document.querySelectorAll('section');
+const dots = document.querySelectorAll('#dots a');
+
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('active');
+      const idx = [...sections].indexOf(e.target.closest('section'));
+      if(idx>-1){ dots.forEach((d,i)=>d.classList.toggle('on', i===idx)); }
+    }
+  });
+},{threshold:0.35});
+
+reveals.forEach(r=>io.observe(r));
+
+window.addEventListener('scroll',()=>{
+  const h = document.documentElement;
+  prog.style.width = (h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+},{passive:true});
+</script>
+
+</body>
+</html>
