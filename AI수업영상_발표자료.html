@@ -10,7 +10,7 @@
     --ink:#eef1ff; --sub:#9aa3c7; --accent:#7c6cff; --accent2:#37d2b4;
     --warn:#ffb86b; --line:#2c3358; --pink:#ff6b9d; --toc-w:228px;
   }
-  *{box-sizing:border-box; margin:0; padding:0;}
+  *{box-sizing:border-box; margin:0; padding:0; word-break:keep-all; overflow-wrap:break-word;}
   html,body{height:100%;}
   body{
     background:var(--bg); color:var(--ink);
@@ -155,6 +155,31 @@
   .flow .step small{display:block; font-weight:400; color:var(--sub); font-size:13.5px; margin-top:4px;}
   .flow .arrow{color:var(--accent); font-size:24px; font-weight:700;}
 
+  /* ===== 강의 안내 목차 (카드 + 화살표) ===== */
+  .toc-flow{display:flex; align-items:stretch; gap:10px; flex-wrap:wrap; margin-top:4px;}
+  .toc-card{
+    flex:1 1 180px; min-width:180px; display:flex; align-items:center; gap:12px;
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:16px 18px; transition:border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+  }
+  .toc-card:hover{border-color:var(--accent2); transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,.35);}
+  .toc-card--accent{border-color:var(--accent); background:linear-gradient(135deg, var(--card), rgba(124,108,255,.16));}
+  .toc-num{
+    flex-shrink:0; width:34px; height:34px; border-radius:50%;
+    background:var(--accent); color:#fff; font-weight:800; font-size:16px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .toc-card--accent .toc-num{background:var(--accent2);}
+  .toc-txt b{display:block; color:var(--ink); font-size:15.5px; line-height:1.3;}
+  .toc-txt small{display:block; color:var(--sub); font-size:12.5px; margin-top:5px; line-height:1.4;}
+  .toc-arrow{display:flex; align-items:center; color:var(--accent); font-size:22px; font-weight:700;}
+  @media (max-width:1180px){ .toc-arrow{transform:rotate(90deg);} }
+
+  /* ===== PPT식 클릭 빌드 (내용이 하나씩) ===== */
+  .frag{opacity:0; transform:translateY(10px); transition:opacity .35s ease, transform .35s ease;}
+  .frag.show{opacity:1; transform:none;}
+  .toc-arrow.frag{display:flex;}
+
   .feat-cols{display:grid; grid-template-columns:1fr 1fr; gap:0 24px;}
   .feat-cols table{font-size:13px;}
   .feat-cols th,.feat-cols td{padding:6px 9px;}
@@ -180,6 +205,7 @@
     .slide{display:flex !important; position:relative; page-break-after:always; min-height:100vh;}
     .body{overflow:visible;}
     #nav,#bar,#toc-hint{display:none;}
+    .frag{opacity:1 !important; transform:none !important;}
   }
 </style>
 </head>
@@ -188,11 +214,11 @@
 <!-- ===== 좌측 목차 ===== -->
 <nav id="toc">
   <div class="logo">👑 Crowny <span>Class</span></div>
-  <div class="grp">강의 소개</div>
-  <div class="item" data-slide="0"><span class="pno">1</span>강의 소개</div>
+  <div class="grp">강의 안내</div>
+  <div class="item" data-slide="0"><span class="pno">1</span>강의 안내</div>
   <div class="grp">Part 1 · 크라우니클래스</div>
-  <div class="item" data-slide="1"><span class="pno">2</span>내 소개</div>
-  <div class="item" data-slide="2"><span class="pno">3</span>우리반 학생들의 작품</div>
+  <div class="item" data-slide="1"><span class="pno">2</span>강사 소개</div>
+  <div class="item" data-slide="2"><span class="pno">3</span>18기 팀 작품</div>
   <div class="item" data-slide="3"><span class="pno">4</span>18기 서지원</div>
   <div class="item" data-slide="4"><span class="pno">5</span>18기 박민주</div>
   <div class="item" data-slide="5"><span class="pno">6</span>AI로 제작할 때 순서</div>
@@ -223,75 +249,91 @@
 
 <div id="deck">
 
-<!-- 0. 강의 소개 표지 -->
+<!-- 0. 강의 안내 표지 -->
 <section class="slide active">
-  <div class="body" style="display:flex; flex-direction:column; justify-content:center; max-width:1060px;">
-    <div class="kicker">강의 소개 · 어떤 이야기인가요</div>
-    <h1 style="font-size:34px; margin-bottom:12px;">하나의 앱을 7개월,<br><b style="color:var(--accent2)">'바이브코딩'</b>으로 만든 앱 소개와 방법</h1>
-    <p class="lead" style="font-size:15.5px; margin-bottom:4px;">7개월간 앱 하나를 직접 만들며 느낀 점을 솔직하게 나눕니다 <br>
-      — <b style="color:var(--accent2)">내가 만든 걸 공유</b>해 AI로 <b style="color:var(--accent2)">어디까지 가능한지</b> 보여드리고, <b style="color:var(--accent2)">깃허브·AI 활용법</b>, <b style="color:var(--accent2)">직접 함께 만들기</b>까지.</p>
-    <div class="flow" style="margin:14px 0 4px;">
-      <div class="step" style="padding:11px 16px; font-size:15px;">① 내가 만든 것 공유<small>AI로 어디까지 가능한가</small></div>
-      <div class="arrow">→</div>
-      <div class="step" style="padding:11px 16px; font-size:15px;">② 깃허브 · AI 활용법<small>도구와 방법</small></div>
-      <div class="arrow">→</div>
-      <div class="step" style="padding:11px 16px; font-size:15px;">③ 직접 함께 만들기<small>게임 · 웹 · 앱 실습</small></div>
+  <div class="body" style="display:flex; flex-direction:column; justify-content:center; max-width:1100px;">
+    <div class="kicker">강의 안내 · 오늘 함께 볼 이야기</div>
+    <h1 style="font-size:32px; margin-bottom:10px;"><b style="color:var(--accent2)">AI 활용 예시</b>와 <b style="color:var(--accent2)">사용 방법</b>을 함께 살펴봅니다</h1>
+    <p class="lead" style="font-size:15.5px; margin-bottom:16px;">실제로 AI로 만든 작품들을 먼저 보여드리고,
+      <b style="color:var(--accent2)">어떤 AI를 · 어떻게 쓰는지</b>까지 — 그리고 마지막엔 <b style="color:var(--accent2)">함께 직접 만들어 봅니다.</b></p>
+
+    <div class="toc-flow">
+      <div class="toc-card">
+        <div class="toc-num">1</div>
+        <div class="toc-txt"><b>학생들의 작품들</b><small>AI를 알게 된 후의 포트폴리오</small></div>
+      </div>
+      <div class="toc-arrow">→</div>
+      <div class="toc-card">
+        <div class="toc-num">2</div>
+        <div class="toc-txt"><b>제가 만든 작품</b><small>학원·강사·학생을 위한 케어 프로그램</small></div>
+      </div>
+      <div class="toc-arrow">→</div>
+      <div class="toc-card">
+        <div class="toc-num">3</div>
+        <div class="toc-txt"><b>학생들의 고민 상담</b><small>AI를 사용하면 생기는 고민들</small></div>
+      </div>
+      <div class="toc-arrow">→</div>
+      <div class="toc-card">
+        <div class="toc-num">4</div>
+        <div class="toc-txt"><b>AI 사용 준비</b><small>어떤 AI를 · 어떻게 쓸까, GitHub 쉽게 배우기</small></div>
+      </div>
+      <div class="toc-arrow">→</div>
+      <div class="toc-card toc-card--accent">
+        <div class="toc-num">5</div>
+        <div class="toc-txt"><b>함께 실제로 제작해보기</b><small>직접 따라 만들기</small></div>
+      </div>
     </div>
-    <!-- <div class="big-msg" style="margin-top:14px; font-size:16px;">사실은 <b>저와 우리반만 알고 싶은 이야기</b>였습니다.<br>그런데 수업 영상이 필요해서, 이렇게 올리게 되었습니다. 🙂</div> -->
+
+    <div style="margin-top:56px;">
+      <div style="font-size:32px; font-weight:800; line-height:1.3; margin-bottom:14px;">다년간의 AI 사용으로 알게 된 <b style="color:var(--accent2)">필요인재</b></div>
+      <div class="big-msg" style="margin-top:0;">
+        <div style="font-size:17px; line-height:1.6;">
+          <b>기획 · 디자인 · 퍼블리셔 · 백엔드</b>를 할 줄 아는 <b>3~5년 경력자</b>
+          또는 그에 준한 실력을 갖춘 자 <span style="color:var(--accent); font-weight:800;">+</span> <b>마케팅</b>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- 2. 내 소개 -->
+<!-- 2. 강사 소개 -->
 <section class="slide">
-  <div class="kicker">내 소개</div>
-  <h2>전국 1위 디지털디자인 국비강사 × AI</h2>
+  <div class="kicker">강사 소개</div>
+  <h2>전국 1위 디지털디자인 국비강사 <span style="font-size:20px; color:var(--sub);">(HRD기준)</span></h2>
   <div class="body">
-  <div class="grid2" style="margin-top:8px; align-items:start;">
-    <!-- 좌: 사람 + AI -->
-    <div style="display:flex; flex-direction:column; gap:14px;">
-      <div class="card">
-        <h3>👨‍🏫 사람</h3>
-        <ul>
-          <li><b>전국 1위 디지털디자인 국비강사</b> <br>
-            — 매일 교실에서 학생들을 가르치는 현직 강사</li>
-          <li><b>경력 20년</b> <br>
-            — 쇼핑몰 운영 4년(+마케팅), 에이전시 운영 10년</li>
-          <li><b>국가 창업자 지원사업 1차·4차 통과</b> <br>
-            — 현장에서 직접 부딪힌 창업·운영 경험</li>
-          <li>개발자는 아님 <br>
-            — 코드는 <b>AI와 협업</b>으로 작성</li>
-          <li>교실에서 직접 겪은 불편함이 곧 기획서</li>
-        </ul>
-      </div>
+  <div class="grid2" style="margin-top:8px; align-items:stretch;">
+    <div class="card">
+      <h3>🏆 전국 1위 디지털디자인 국비강사</h3>
+      <p>매일 교실에서 학생들을 가르치는 현직 강사</p>
     </div>
-    
-      <div class="card">
-        <h3>🤖 AI</h3>
-        <ul>
-          <li>설계·코드 작성·버그 수정을 함께한 <b>AI 코딩 도구 (클로드)</b></li>
-          <li>저장할 공간 github</li>
-          <li>용도에 맞는 AI 선택</li>
-          <li>이젠 디자인보다 구현부터</li>
-        </ul>
-      </div>
-    <!-- 우: 전체 커리큘럼 -->
-    <!-- <div class="card" style="border-color:var(--accent);">
-      <h3>🗺️ 전체 커리큘럼</h3>
-      <ul>
-        <li><b>Part 1 · 크라우니클래스</b> — 무엇을·왜 만들었나, 30개 기능의 의도</li>
-        <li><b>Part 2 · 도구와 방법</b> — 사용한 AI, GitHub, AI에게 일 시키는 법</li>
-        <li><b>Part 3 · 직접 만들기</b> — 게임 → 웹 → 데스크톱 앱 실습, 우리반 작품</li>
-      </ul>
-      <p style="margin-top:10px; color:var(--sub); font-size:15px;">앞부분은 <b style="color:var(--accent2)">크라우니클래스가 무엇인지</b>, 뒷부분은 <b style="color:var(--accent2)">여러분이 직접 게임·웹·앱을 만드는 실습</b>입니다.</p>
-    </div> -->
+    <div class="card">
+      <h3>📈 경력 20년</h3>
+      <p>쇼핑몰 운영 4년(+마케팅), 에이전시 운영 10년</p>
+    </div>
+    <div class="card">
+      <h3>🚀 국가 창업자 지원사업 1차·4차 통과</h3>
+      <p>현장에서 직접 부딪힌 창업·운영 경험</p>
+    </div>
+    <div class="card">
+      <h3>🤝 개발자는 아님</h3>
+      <p>코드는 <b>AI와 협업</b>으로 작성</p>
+    </div>
+    <div class="card">
+      <h3>💡 교실에서 직접 겪은 불편함이 곧 기획서</h3>
+      <p>현장의 불편이 그대로 제품 아이디어가 됩니다</p>
+    </div>
+    <div class="card" style="border-color:var(--accent);">
+      <h3>✍️ 현재 9만명 사용 중 ICANNOTE 제작자</h3>
+      <p>초·중·고·대학생의 선생님들을 위한 ICANNOTE 판서 프로그램 제작 — <a href="https://www.icannote.com" target="_blank" style="color:var(--accent2);">www.icannote.com</a></p>
+    </div>
   </div>
   <div class="big-msg" style="margin-top:16px">현장을 가장 잘 아는 강사가 기획하고, AI가 손을 보탰습니다.<br><b>"기술보다 '무엇이 불편한지 아는 것'이 먼저"</b> — 이 시리즈의 핵심 메시지입니다.</div>
   </div>
 </section>
 
-<!-- 2-c. 우리반 학생들의 작품 -->
+<!-- 2-c. 우리반 팀 작품 -->
 <section class="slide">
-  <div class="kicker">우리반 학생들의 작품</div>
+  <div class="kicker">우리반 팀 작품</div>
   <h2>🎓 우리반이 AI로 만든 팀플 · 작품들</h2>
   <div class="body">
     <p class="lead" style="margin-bottom:10px">디자인을 배우고, 퍼블리싱을 배우고, <b style="color:var(--accent2)">이쪽(UI/UX 제작) 시장에 대한 이해와 현실 감각</b>을 익힌 다음 <br>
@@ -312,35 +354,19 @@
     <div class="grid2 art-grid" style="gap:14px;">
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
         <div style="flex:1; min-width:0;"><h3>상상의 문</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://xn--z92b74ha268d.com/" target="_blank" style="color:var(--accent2);">기존 주소</a> / <a href="https://doorlove1234-coder.github.io/sangsangDoor/" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">팀 프로젝트</span></div><p>조사 → 디자인 → 제작 → 제안서발송</p></div>
-        <img src="images/s1.jpg" alt="상상의 문" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품1.jpg</div>
+        <img src="images/team_sangsang.jpg" alt="상상의 문" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품1.jpg</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>18기 서지원</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/portfolio/" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">개인 제작</span></div><p>작품 설명을 여기에 적어주세요.</p></div>
-        <img src="작품2.jpg" alt="작품 2" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품2.jpg</div>
+        <div style="flex:1; min-width:0;"><h3>시스템치과</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://systemdentalclinic.com/" target="_blank" style="color:var(--accent2);">기존 주소</a> / <a href="https://kkm15921598.github.io/system_dental/" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">팀 프로젝트</span></div><p>운영중인 치과 리뉴얼</p></div>
+        <img src="images/team_system.jpg" alt="작품 3" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>시스템치과</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>시스템치과</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://systemdentalclinic.com/" target="_blank" style="color:var(--accent2);">기존 주소</a> / <a href="https://kkm15921598.github.io/system_dental/" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">팀 프로젝트</span></div><p>작품 설명을 여기에 적어주세요.</p></div>
-        <img src="images/s3.jpg" alt="작품 3" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>시스템치과</div>
+        <div style="flex:1; min-width:0;"><h3>노톡</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://yene-redesign-demo.netlify.app/" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">팀 프로젝트</span></div><p>대화없이 함께하는 새로운 취미공유의 방식</p></div>
+        <img src="images/team_notalk.jpg" alt="작품 5" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품5.jpg</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>작품 4 제목</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">개인 제작</span></div><p>작품 설명을 여기에 적어주세요.</p></div>
-        <img src="작품4.jpg" alt="작품 4" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품4.jpg</div>
-      </div>
-      <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>(주)예네</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://yene.co.kr/" target="_blank" style="color:var(--accent2);">기존 주소</a> / <a href="https://yene-redesign-demo.netlify.app/" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">팀 프로젝트</span></div><p>작품 설명을 여기에 적어주세요.</p></div>
-        <img src="images/s5.jpg" alt="작품 5" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품5.jpg</div>
-      </div>
-      <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>작품 6 제목</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">개인 제작</span></div><p>작품 설명을 여기에 적어주세요.</p></div>
-        <img src="작품6.jpg" alt="작품 6" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품6.jpg</div>
-      </div>
-      <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>부자관광</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://www.bujatour.com/" target="_blank" style="color:var(--accent2);">기존 주소</a> / <a href="https://minjoo073.github.io/redesign/" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">팀 프로젝트</span></div><p>작품 설명을 여기에 적어주세요.</p></div>
-        <img src="images/s7.jpg" alt="작품 7" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품7.jpg</div>
-      </div>
-      <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>작품 8 제목</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">개인 제작</span></div><p>작품 설명을 여기에 적어주세요.</p></div>
-        <img src="작품8.jpg" alt="작품 8" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품8.jpg</div>
+        <div style="flex:1; min-width:0;"><h3>트랙시</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://2team-tracksy2.vercel.app/home" target="_blank" style="color:var(--accent2);">접속 주소</a> · <span style="color:var(--accent); font-weight:700;">개인 제작</span></div><p>작품 설명을 여기에 적어주세요.</p></div>
+        <img src="images/team_tracksy_1.jpg" alt="작품 4" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>작품4.jpg</div>
       </div>
     </div>
   </div>
@@ -348,7 +374,7 @@
 
 <!-- 2-d. 학생 — 18기 서지원 -->
 <section class="slide">
-  <div class="kicker">우리반 학생들의 작품 · 18기</div>
+  <div class="kicker">우리반 팀 작품 · 18기</div>
   <h2>🎓 18기 서지원</h2>
   <div class="body">
     <!-- 학생 프로필 -->
@@ -359,42 +385,41 @@
           <span style="background:var(--card2); border:1px solid var(--line); border-radius:999px; padding:4px 13px; font-size:13px; color:var(--accent); font-weight:700;">🟢 현재 활동중</span>
         </div>
         <h3 style="font-size:17px; margin-bottom:5px;">🗣️ 강사의 학생 설명</h3>
-        <p style="color:var(--sub); font-size:15px; line-height:1.65; margin-bottom:13px;">학생 설명을 여기에 적어주세요.</p>
-        <h3 style="font-size:17px; margin-bottom:5px;">📜 학생 이력</h3>
-        <p style="color:var(--sub); font-size:15px; line-height:1.65; margin-bottom:13px;">이력을 여기에 적어주세요.</p>
+        <p style="color:var(--sub); font-size:15px; line-height:1.65; margin-bottom:13px;">AI를 적극적으로 수용하고 활용하고 잠도 안자고 복습한 노력파</p>
         <h3 style="font-size:17px; margin-bottom:5px;">🚀 현재 활동중인 사항</h3>
-        <p style="color:var(--sub); font-size:15px; line-height:1.65; margin-bottom:13px;">현재 활동을 여기에 적어주세요.</p>
-        <div style="font-size:14.5px;">🔗 <a href="https://jiwon12011.github.io/portfolio/" target="_blank" style="color:var(--accent2); font-weight:700;"></a>대표 포트폴리오 — 링크 주소를 여기에</a></div>
+        <p style="color:var(--sub); font-size:15px; line-height:1.65; margin-bottom:13px;">KAIAT 운영 자문, 취업전 프리랜서 활동 중</p>
+        <div style="font-size:14.5px;">🔗 <a href="https://jiwon12011.github.io/portfolio/" target="_blank" style="color:var(--accent2); font-weight:700;">대표 포트폴리오</a></div>
       </div>
-      <img src="images/seo1.jpg" alt="18기 서지원" style="flex-shrink:0; width:440px; height:280px; object-fit:cover; border-radius:14px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:240px; height:280px; border:2px dashed var(--line); border-radius:14px; align-items:center; justify-content:center; flex-direction:column; gap:6px; color:#565e85; font-size:13px; text-align:center;"><div style="font-size:30px">🖼️</div>서지원.jpg</div>
+      <img src="images/jiwon.jpg" alt="18기 서지원" style="flex-shrink:0; width:440px; height:280px; object-fit:cover; border-radius:14px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:240px; height:280px; border:2px dashed var(--line); border-radius:14px; align-items:center; justify-content:center; flex-direction:column; gap:6px; color:#565e85; font-size:13px; text-align:center;"><div style="font-size:30px">🖼️</div>서지원.jpg</div>
     </div>
 
     <!-- 작품 모음 6개 -->
     <div style="font-size:13px; color:var(--accent2); font-weight:800; letter-spacing:.05em; margin:6px 0 10px;">작품 모음</div>
     <div class="grid2 art-grid" style="gap:14px;">
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>자린고비 앱</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://play.google.com/store/apps/details?id=jaringobi.myapp" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>소비를 게임처럼 절약을 습관으로 만드는 모바일 서비스</p></div>
-        <img src="서지원1.jpg" alt="작품 1" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원1.jpg</div>
+        <div style="flex:1; min-width:0;"><h3>자린고비 앱</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://play.google.com/store/apps/details?id=jaringobi.myapp" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>소비를 게임처럼 절약을<br>습관으로 만드는 모바일 서비스</p></div>
+        <img src="images/jiwon01.jpg" alt="작품 1" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원1.jpg</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>귀혼</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/hon_promotion/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>스크롤만으로 귀혼의 세계를 탐험하는 인터랙티브 웹 경험</p></div>
-        <img src="서지원2.jpg" alt="작품 2" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원2.jpg</div>
+        <div style="flex:1; min-width:0;"><h3>귀혼</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/hon_promotion/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>스크롤만으로 귀혼의 세계를<br>탐험하는 인터랙티브 웹 경험</p></div>
+        <img src="images/jiwon02.jpg" alt="작품 2" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원2.jpg</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>유미의 세포들</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/Yumi-s-Cells/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>유미의 세포들 세계관을 한곳에 담아낸 팬 아카이브 플랫폼</p></div>
-        <img src="서지원3.jpg" alt="작품 3" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원3.jpg</div>
+        <div style="flex:1; min-width:0;"><h3>유미의 세포들</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/Yumi-s-Cells/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>유미의 세포들 세계관을<br>한곳에 담아낸 팬 아카이브 플랫폼</p></div>
+        <img src="images/jiwon03.jpg" alt="작품 3" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원3.jpg</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>플레디스 엔터테인먼트</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/pledis/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>아이돌의 세계를 한 장면으로. 플레디스 엔터테인먼트의 아티스트를 담아낸 브랜드 비주얼 프로젝트</p></div>
-        <img src="서지원4.jpg" alt="작품 4" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원4.jpg</div>
+        <div style="flex:1; min-width:0;"><h3>플레디스 엔터테인먼트</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/pledis/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>아이돌의 세계를 한 장면으로.<br>플레디스 엔터테인먼트의 아티스트를 담아낸 브랜드 비주얼 프로젝트</p></div>
+        <img src="images/jiwon04.jpg" alt="작품 4" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원4.jpg</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>POSE 쇼핑몰</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/portfolio/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>브랜드 아이덴티티부터 커머스 경험까지 구축한 뷰티 플랫폼</p></div>
-        <img src="서지원5.jpg" alt="작품 5" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원5.jpg</div>
+        <div style="flex:1; min-width:0;"><h3>POSE 쇼핑몰</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/portfolio/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>브랜드 아이덴티티부터<br>커머스 경험까지 구축한 뷰티 플랫폼</p></div>
+        <img src="images/jiwon05.jpg" alt="작품 5" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원5.jpg</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>우리사이의 음표</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/music-note_game/play/index.html" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>랜딩에서 클릭하면 바로 플레이되는 멀티엔딩 오토메 비주얼노벨</p></div>
-        <img src="서지원6.jpg" alt="작품 6" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원6.jpg</div>
+        <div style="flex:1; min-width:0;"><h3>우리사이의 음표</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://jiwon12011.github.io/music-note_game/play/index.html" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>랜딩에서 클릭하면 바로 플레이되는<br>
+          멀티엔딩 오토메 비주얼노벨</p></div>
+        <img src="images/jiwon06.jpg" alt="작품 6" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>서지원6.jpg</div>
       </div>
     </div>
   </div>
@@ -402,25 +427,23 @@
 
 <!-- 2-f. 학생 — 18기 박민주 -->
 <section class="slide">
-  <div class="kicker">우리반 학생들의 작품 · 18기</div>
+  <div class="kicker">우리반 팀 작품 · 18기</div>
   <h2>🎓 18기 박민주</h2>
   <div class="body">
     <!-- 학생 프로필 -->
     <div class="card" style="display:flex; gap:22px; align-items:flex-start; margin-bottom:18px;">
       <div style="flex:1; min-width:0;">
         <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
-          <span style="background:var(--card2); border:1px solid var(--line); border-radius:999px; padding:4px 13px; font-size:13px; color:var(--accent2); font-weight:700;">⏱️ 배운 기간 5개월</span>
+          <span style="background:var(--card2); border:1px solid var(--line); border-radius:999px; padding:4px 13px; font-size:13px; color:var(--accent2); font-weight:700;">⏱️ 배운 기간 4/5개월</span>
           <span style="background:var(--card2); border:1px solid var(--line); border-radius:999px; padding:4px 13px; font-size:13px; color:var(--accent); font-weight:700;">🟢 현재 활동중</span>
         </div>
         <h3 style="font-size:17px; margin-bottom:5px;">🗣️ 강사의 학생 설명</h3>
         <p style="color:var(--sub); font-size:15px; line-height:1.65; margin-bottom:13px;">학생 설명을 여기에 적어주세요.</p>
-        <h3 style="font-size:17px; margin-bottom:5px;">📜 학생 이력</h3>
-        <p style="color:var(--sub); font-size:15px; line-height:1.65; margin-bottom:13px;">이력을 여기에 적어주세요.</p>
         <h3 style="font-size:17px; margin-bottom:5px;">🚀 현재 활동중인 사항</h3>
-        <p style="color:var(--sub); font-size:15px; line-height:1.65; margin-bottom:13px;">현재 활동을 여기에 적어주세요.</p>
-        <div style="font-size:14.5px;">🔗 대표 포트폴리오 — <a href="https://" target="_blank" style="color:var(--accent2); font-weight:700;">링크 주소를 여기에</a></div>
+        <p style="color:var(--sub); font-size:15px; line-height:1.65; margin-bottom:13px;">WEBNEST 에이젼시 사이트 리뉴얼, JUNOSOFT 카페24용 디자인+html 스킨제작</p>
+        <div style="font-size:14.5px;">🔗 <a href="https://portfolio-r32m.vercel.app/" target="_blank" style="color:var(--accent2); font-weight:700;">대표 포트폴리오</a></div>
       </div>
-      <img src="박민주.jpg" alt="18기 박민주" style="flex-shrink:0; width:240px; height:280px; object-fit:cover; border-radius:14px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:240px; height:280px; border:2px dashed var(--line); border-radius:14px; align-items:center; justify-content:center; flex-direction:column; gap:6px; color:#565e85; font-size:13px; text-align:center;"><div style="font-size:30px">🖼️</div>박민주.jpg</div>
+      <img src="images/minju.jpg" alt="18기 박민주" style="flex-shrink:0; width:440px; height:280px; object-fit:cover; border-radius:14px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:240px; height:280px; border:2px dashed var(--line); border-radius:14px; align-items:center; justify-content:center; flex-direction:column; gap:6px; color:#565e85; font-size:13px; text-align:center;"><div style="font-size:30px">🖼️</div>박민주.jpg</div>
     </div>
 
     <!-- 작품 모음 6개 -->
@@ -428,27 +451,27 @@
     <div class="grid2 art-grid" style="gap:14px;">
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
         <div style="flex:1; min-width:0;"><h3>LUNARÉ</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://1215kkm.github.io/18_minju_LUNA/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>스킨케어 브랜드 'LUNARÉ' 브랜드 사이트 — 성분·디테일 인터랙션 (React)</p></div>
-        <img src="images/minju_LUNA.jpg" alt="LUNARÉ" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>LUNARÉ</div>
+        <img src="images/minju_LUNA.jpg" alt="LUNARÉ" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>LUNARÉ</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
         <div style="flex:1; min-width:0;"><h3>ON VINYL</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://1215kkm.github.io/18_minju_ONVINYL/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>LP·바이닐 음악 소개/큐레이션 사이트 — 장르·신보·베스트</p></div>
-        <img src="images/minju_ONVINYL.jpg" alt="ON VINYL" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>ON VINYL</div>
+        <img src="images/minju_ONVINYL.jpg" alt="ON VINYL" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>ON VINYL</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
         <div style="flex:1; min-width:0;"><h3>FANCIVE</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://1215kkm.github.io/18_minju_FANCIVE/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>미니멀 패션 룩북·아카이브 브랜드 사이트 — 컬렉션·아카이브·룩 상세</p></div>
-        <img src="images/minju_FANCIVE.jpg" alt="FANCIVE" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>FANCIVE</div>
+        <img src="images/minju_FANCIVE.jpg" alt="FANCIVE" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>FANCIVE</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
         <div style="flex:1; min-width:0;"><h3>MathHub</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://1215kkm.github.io/18_minju_MathHub/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>수학 학습 콘텐츠 플랫폼 — 개념·문제집·기출·해외입시 가이드</p></div>
-        <img src="images/minju_MathHub.jpg" alt="MathHub" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>MathHub</div>
+        <img src="images/minju_MathHub.jpg" alt="MathHub" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>MathHub</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
         <div style="flex:1; min-width:0;"><h3>부자관광</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://1215kkm.github.io/18_minju_buja/" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>버스·관광 서비스 기업 사이트 — 차량 안내·고객 후기·문의</p></div>
-        <img src="images/minju_buja.jpg" alt="부자관광" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>부자관광</div>
+        <img src="images/minju_buja.jpg" alt="부자관광" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>부자관광</div>
       </div>
       <div class="card" style="display:flex; gap:14px; align-items:flex-start;">
-        <div style="flex:1; min-width:0;"><h3>작품 6 제목</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>작품 설명을 여기에 적어주세요.</p></div>
-        <img src="박민주6.jpg" alt="작품 6" style="flex-shrink:0; width:128px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:128px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>박민주6.jpg</div>
+        <div style="flex:1; min-width:0;"><h3>WEBNEST</h3><div style="font-size:13px; color:var(--sub); margin:4px 0 8px;">🔗 <a href="https://" target="_blank" style="color:var(--accent2);">접속 주소</a></div><p>웹에이젼시 사이트 리뉴얼</p></div>
+        <img src="images/minju_webnest.jpg" alt="작품 6" style="flex-shrink:0; width:150px; height:90px; object-fit:cover; border-radius:10px; border:1px solid var(--line);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none; flex-shrink:0; width:150px; height:90px; border:2px dashed var(--line); border-radius:10px; align-items:center; justify-content:center; flex-direction:column; gap:4px; color:#565e85; font-size:11px; text-align:center;">🖼️<br>박민주6.jpg</div>
       </div>
     </div>
   </div>
@@ -730,12 +753,12 @@
 <!-- 14. 비하인드 -->
 <section class="slide">
   <div class="kicker">비하인드</div>
-  <h2>만들면서 넘은 고비 3가지</h2>
-  <p class="lead" style="margin-bottom:14px">코드를 한 줄씩 보여드리진 않겠습니다. 대신 <b style="color:var(--accent2)">"이런 문제도 AI랑 같이 풀 수 있다"</b>는 실제 사례 3가지를 공유합니다.</p>
+  <h2>프로그래머가 아니어서 만들면서 넘은 고비 3가지</h2>
+  <p class="lead" style="margin-bottom:14px"><b style="color:var(--accent2)">"이런 문제도 AI랑 같이 풀 수 있다"</b>는 실제 사례 3가지를 공유합니다.</p>
   <div class="grid3">
-    <div class="card"><h3>💸 비용 폭탄</h3><p>실시간 동기화를 잘못 켜놔서 클라우드 읽기가 <b>하루 수천 번</b> 터졌습니다.<br><br>해결: "화면을 열 때만 켜고, 닫으면 끄기" — AI에게 사용량 로그를 보여주며 함께 찾았습니다.</p></div>
-    <div class="card"><h3>🔒 기능 잠금 구멍</h3><p>유료 기능인데 무료 사용자가 다 쓸 수 있던 구멍이 있었습니다.<br><br>해결: 기능이 시작되는 <b>입구를 전부 목록으로 만들어</b> 하나씩 점검 — AI가 가장 잘하는 '전수 검사'였습니다.</p></div>
-    <div class="card"><h3>🔀 화면 섞임</h3><p>학생 여러 명의 화면이 서로 섞여 보이는 버그 — 가장 무서웠던 문제.<br><br>해결: 전체가 공유하던 상태를 <b>학생별로 분리</b>. "동시에 일어나는 일"을 다루는 법을 배웠습니다.</p></div>
+    <div class="card"><h3>💸 비용 폭탄</h3><p>실시간 동기화를 잘못 켜놔서 클라우드 읽기가 <b>하루 수천 번</b> 터졌습니다.<br><br>프로그램사용중 자동 반복으로 자료를 읽는(폴링) 방식 스타일을 화면을 열 때만 켜고, 닫으면 끄기방식으로 수정(실시간 리스너)</p></div>
+    <div class="card"><h3>🔒 기능의 섞임</h3><p><b>하나를 고치면 다른게 안되는 문제</b><br><br>많은 기능을 처음에 철저한 계획없이 하다보니 업데이트를 하여생긴 문제</p></div>
+    <div class="card"><h3>🔀 쉽지 않았던 화면공유</h3><p><b>너무 느린 화면공유</b>와 <b>비싼 운영 비용</b><br><br>여러가지 화면공유의 방식 기술중 저에게 가장 좋은방식을 찾고 운영비가 안드는 방법을 선택</p></div>
   </div>
   <div class="big-msg">전공자가 몇 년 걸릴 것 같죠? <b>디자인 강사가 AI랑 했습니다.</b><br>그러니까 — 이제 여러분 차례예요.</div>
 </section>
@@ -962,7 +985,7 @@
 </div>
 
 <div id="bar"></div>
-<div id="toc-hint">← / → 방향키 · 클릭 · 스페이스로 이동 | Home/End 처음·끝</div>
+<div id="toc-hint">클릭 · → · 스페이스 = 내용 하나씩 | ↑/↓ 슬라이드 통째 이동 | Home/End 처음·끝</div>
 <div id="nav">
   <button id="themeToggle" title="다크/화이트 모드 전환">☀️</button>
   <button id="prev">◀ 이전</button>
@@ -974,21 +997,87 @@
 (function(){
   var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
   var tocItems = Array.prototype.slice.call(document.querySelectorAll('#toc .item'));
-  var i = 0;
-  function show(n){
+  var i = 0;       // 현재 슬라이드
+  var frag = 0;    // 현재 슬라이드에서 보여진 내용(프래그먼트) 수
+
+  // ── 슬라이드별 프래그먼트(내용 묶음) 구성: 큰제목(kicker/h1/h2)은 항상 보임, 나머지는 하나씩 ──
+  function buildFragments(slide){
+    var groups = [];
+    function pushEl(el){
+      var tag = el.tagName;
+      if(el.classList.contains('kicker') || tag==='H1' || tag==='H2') return; // 큰제목은 처음부터
+      // 카드 그리드: 칸(카드)을 하나씩
+      if(el.classList.contains('grid2') || el.classList.contains('grid3') || el.classList.contains('feat-cols')){
+        Array.prototype.forEach.call(el.children, function(c){ groups.push([c]); });
+        return;
+      }
+      // 흐름(화살표): 화살표는 뒤따르는 칸과 함께 나오게 묶음
+      if(el.classList.contains('flow') || el.classList.contains('toc-flow')){
+        var cur = [];
+        Array.prototype.forEach.call(el.children, function(c){
+          if(c.classList.contains('arrow') || c.classList.contains('toc-arrow')){
+            cur.push(c);
+          } else {
+            cur.push(c); groups.push(cur); cur = [];
+          }
+        });
+        if(cur.length) groups.push(cur);
+        return;
+      }
+      // 그 외: 요소 하나가 하나의 내용
+      groups.push([el]);
+    }
+    Array.prototype.forEach.call(slide.children, function(ch){
+      if(ch.classList.contains('body')) Array.prototype.forEach.call(ch.children, pushEl);
+      else pushEl(ch);
+    });
+    return groups;
+  }
+
+  slides.forEach(function(s){
+    s._frags = buildFragments(s);
+    s._frags.forEach(function(g){ g.forEach(function(el){ el.classList.add('frag'); }); });
+  });
+
+  function applyFrags(slide, count){
+    slide._frags.forEach(function(g, idx){
+      g.forEach(function(el){ el.classList.toggle('show', idx < count); });
+    });
+  }
+
+  function show(n, mode){
     i = Math.max(0, Math.min(slides.length-1, n));
     slides.forEach(function(s,k){ s.classList.toggle('active', k===i); });
     tocItems.forEach(function(t){ t.classList.toggle('active', parseInt(t.dataset.slide,10)===i); });
     var act = document.querySelector('#toc .item.active');
     if(act) act.scrollIntoView({block:'nearest'});
+    // mode: 'end'/'all' → 내용 전부 펼침 / 그 외 → 처음부터(아무 내용 없이)
+    frag = (mode==='end' || mode==='all') ? slides[i]._frags.length : 0;
+    applyFrags(slides[i], frag);
     document.getElementById('counter').textContent = (i+1) + ' / ' + slides.length;
     document.getElementById('bar').style.width = 'calc((100% ) * ' + ((i+1)/slides.length) + ')';
   }
+
+  function next(){
+    if(frag < slides[i]._frags.length){ frag++; applyFrags(slides[i], frag); }
+    else if(i < slides.length-1){ show(i+1, 'start'); }
+  }
+  function prev(){
+    if(frag > 0){ frag--; applyFrags(slides[i], frag); }
+    else if(i > 0){ show(i-1, 'end'); }
+  }
+
   tocItems.forEach(function(t){
-    t.addEventListener('click', function(){ show(parseInt(t.dataset.slide,10)); });
+    t.addEventListener('click', function(){ show(parseInt(t.dataset.slide,10), 'all'); });
   });
-  document.getElementById('prev').onclick = function(){ show(i-1); };
-  document.getElementById('next').onclick = function(){ show(i+1); };
+  document.getElementById('prev').onclick = function(){ prev(); };
+  document.getElementById('next').onclick = function(){ next(); };
+
+  // 슬라이드 영역 클릭 → 내용 하나씩(다음). 링크·버튼·목차 클릭은 제외
+  document.getElementById('deck').addEventListener('click', function(e){
+    if(e.target.closest('a, button, input, #nav, #toc')) return;
+    next();
+  });
 
   // 다크/화이트 모드 토글 (선택 저장)
   var themeBtn = document.getElementById('themeToggle');
@@ -1000,12 +1089,14 @@
   themeBtn.onclick = function(){ applyTheme(!document.body.classList.contains('light')); };
   try{ if(localStorage.getItem('deckTheme')==='light') applyTheme(true); }catch(e){}
   document.addEventListener('keydown', function(e){
-    if(e.key==='ArrowRight' || e.key===' ' || e.key==='PageDown') show(i+1);
-    else if(e.key==='ArrowLeft' || e.key==='PageUp') show(i-1);
-    else if(e.key==='Home') show(0);
-    else if(e.key==='End') show(slides.length-1);
+    if(e.key==='ArrowRight' || e.key===' ' || e.key==='PageDown'){ e.preventDefault(); next(); }
+    else if(e.key==='ArrowLeft' || e.key==='PageUp'){ e.preventDefault(); prev(); }
+    else if(e.key==='ArrowDown'){ e.preventDefault(); show(i+1, 'start'); }   // 슬라이드 통째 이동
+    else if(e.key==='ArrowUp'){ e.preventDefault(); show(i-1, 'end'); }
+    else if(e.key==='Home') show(0, 'start');
+    else if(e.key==='End') show(slides.length-1, 'all');
   });
-  show(0);
+  show(0, 'start');
 })();
 </script>
 </body>
