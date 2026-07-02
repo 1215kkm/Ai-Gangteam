@@ -155,9 +155,16 @@ async function exportImg(){
   document.getElementById('expModal').style.display='block'; window.scrollTo(0,0);
   try{
     for(var i=0;i<blocks.length;i++){
-      var el=blocks[i], w=el.scrollWidth, h=el.scrollHeight;
+      var el=blocks[i];
+      var pad=document.createElement('div');   // 여백 두른 임시 복제본을 캡처
+      pad.style.cssText='position:fixed;left:-99999px;top:0;background:#fff;padding:26px 32px;box-sizing:border-box;width:'+(el.offsetWidth+64)+'px';
+      pad.appendChild(el.cloneNode(true));
+      document.body.appendChild(pad);
+      var w=pad.scrollWidth, h=pad.scrollHeight;
       var scale=Math.min(2, Math.sqrt(4000000/(w*h)), 3000/w, 3600/h); if(!(scale>0)) scale=1;
-      var canvas=await html2canvas(el,{scale:scale,backgroundColor:'#ffffff',useCORS:true,windowWidth:w});
+      var canvas;
+      try{ canvas=await html2canvas(pad,{scale:scale,backgroundColor:'#ffffff',useCORS:true,windowWidth:w}); }
+      finally{ document.body.removeChild(pad); }
       var url=canvas.toDataURL('image/png');
       var wrap=document.createElement('div'); wrap.style.margin='0 0 24px';
       var lbl=document.createElement('div'); lbl.textContent='ACT '+(i+1); lbl.style.cssText='color:#fff;font-weight:800;font-size:13px;margin-bottom:8px;opacity:.85';
