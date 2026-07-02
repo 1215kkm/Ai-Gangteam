@@ -1,0 +1,77 @@
+/* styles/tokens.css — Crowny Class 기본 + 보고서 확장 (강디 확정 2026.06.04) */
+/* 활성 디자인 스타일 #1 — Crowny Class (보라→분홍). active.txt 와 한 쌍. */
+:root {
+  /* ===== 브랜드 ===== */
+  --primary: #8A38F5;
+  --primary-dark: #7030D4;
+  --primary-light: #A855F7;
+  --primary-rgb: 138, 56, 245;
+  --secondary: #D53A6B;
+  --secondary-light: #F472B6;
+  --gradient: linear-gradient(135deg, #8A38F5 0%, #D53A6B 100%);
+
+  /* ===== 라이트 (보고서 본문) ===== */
+  --light-bg: #F3F4F6;
+  --light-card: #FFFFFF;
+  --light-border: #E5E7EB;
+  --light-hover: #F9FAFB;
+
+  /* ===== 텍스트 ===== */
+  --text-dark: #1F2937;
+  --text-muted: #6B7280;
+  --text-primary: #FFFFFF;
+
+  /* ===== 상태 ===== */
+  --success: #22C55E;  --success-light: #DCFCE7;
+  --warning: #F59E0B;  --warning-light: #FEF3C7;
+  --error:   #EF4444;  --error-light:   #FEE2E2;
+  --info:    #3B82F6;  --info-light:    #DBEAFE;
+
+  /* ===== 모서리 ===== */
+  --radius-sm: 6px;  --radius-md: 10px;  --radius-lg: 12px;
+  --radius-xl: 16px; --radius-2xl: 20px; --radius-full: 9999px;
+
+  /* ===== 그림자 ===== */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.10);
+  --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
+  --shadow-primary: 0 4px 14px rgba(138, 56, 245, 0.35);
+
+  /* ===== 간격 (8px 그리드) ===== */
+  --spacing-xs: 4px; --spacing-sm: 8px; --spacing-md: 16px;
+  --spacing-lg: 24px; --spacing-xl: 32px;
+
+  /* ===== 폰트 크기 (최소 16px) ===== */
+  --font-xs: 16px; --font-sm: 16px; --font-md: 16px;
+  --font-lg: 18px; --font-xl: 20px; --font-2xl: 26px; --font-3xl: 32px;
+  --font-4xl: 48px;            /* KPI 대형 숫자 전용 */
+
+  /* ===== 트랜지션 ===== */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  /* ===== 폰트 패밀리 ===== */
+  --font-family-base: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* ===== 레이아웃 ===== */
+  --content-max-width: 1180px;
+  --section-gap: var(--spacing-xl);
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-md);
+  line-height: 1.6;
+  color: var(--text-dark);
+  background: var(--light-bg);
+}
+
+/* 보고서 헬퍼: 그라데이션 텍스트 (KPI 숫자·eyebrow) */
+.gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
