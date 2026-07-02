@@ -148,14 +148,22 @@ h1{font-size:28px;font-weight:800;line-height:1.3;margin:8px 0 6px;letter-spacin
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
+function isMobileDevice(){
+  var ua=navigator.userAgent||'';
+  if(/Mobi|Android|iPhone|iPod|Windows Phone/i.test(ua)) return true;
+  if(/iPad/i.test(ua)) return true;
+  if(/Macintosh/i.test(ua) && navigator.maxTouchPoints>1) return true; // iPadOS 13+
+  return false;
+}
 async function exportImg(){
   var btn=document.getElementById('expBtn');
   if(typeof html2canvas==='undefined'){ alert('인터넷 연결이 필요해요 — 변환 라이브러리를 못 불러왔습니다. 사파리/크롬으로 열어 다시 시도해 주세요.'); return; }
   var paper=document.querySelector('.paper');
   if(!paper){ alert('내보낼 내용이 없어요.'); return; }
+  var mobile=isMobileDevice();
   var box=document.getElementById('expList'); box.innerHTML='';
   var oldTxt=btn.textContent; btn.textContent='만드는 중…'; btn.disabled=true; btn.style.opacity=0.6;
-  document.getElementById('expModal').style.display='block'; window.scrollTo(0,0);
+  if(mobile){ document.getElementById('expModal').style.display='block'; window.scrollTo(0,0); }
   var pad=null;
   try{
     // 여백 두른 임시 복제본을 좁은 고정폭(iOS 캔버스 한도 안전)으로 캡처
@@ -175,9 +183,16 @@ async function exportImg(){
     var canvas=await html2canvas(pad,{scale:scale,backgroundColor:'#ffffff',useCORS:true,allowTaint:true,imageTimeout:8000,windowWidth:FIXW});
     var url=canvas.toDataURL('image/png');
 
-    var img=document.createElement('img'); img.src=url; img.style.cssText='max-width:100%;border-radius:10px;background:#fff;box-shadow:0 8px 30px rgba(0,0,0,.5)';
-    var dl=document.createElement('a'); dl.href=url; dl.download='강팀회의록.png'; dl.textContent='⬇ 저장'; dl.style.cssText='display:inline-block;margin-top:12px;background:linear-gradient(135deg,#8A38F5,#D53A6B);color:#fff;padding:9px 18px;border-radius:999px;font-weight:800;text-decoration:none;font-size:14px';
-    box.appendChild(img); box.appendChild(document.createElement('br')); box.appendChild(dl);
+    if(mobile){
+      // 모바일: 자동 다운로드가 막혀 있어(특히 iOS) 이미지를 띄워 길게 눌러 저장하게
+      var img=document.createElement('img'); img.src=url; img.style.cssText='max-width:100%;border-radius:10px;background:#fff;box-shadow:0 8px 30px rgba(0,0,0,.5)';
+      var dl=document.createElement('a'); dl.href=url; dl.download='강팀회의록.png'; dl.textContent='⬇ 저장'; dl.style.cssText='display:inline-block;margin-top:12px;background:linear-gradient(135deg,#8A38F5,#D53A6B);color:#fff;padding:9px 18px;border-radius:999px;font-weight:800;text-decoration:none;font-size:14px';
+      box.appendChild(img); box.appendChild(document.createElement('br')); box.appendChild(dl);
+    }else{
+      // PC: 모달 없이 바로 다운로드
+      var a=document.createElement('a'); a.href=url; a.download='강팀회의록.png';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
   }catch(e){ alert('이미지 만들기 실패: '+((e&&e.message)||e)); }
   finally{ if(pad) document.body.removeChild(pad); }
   btn.textContent=oldTxt; btn.disabled=false; btn.style.opacity=1;
